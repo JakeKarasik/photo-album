@@ -18,6 +18,12 @@ public class LoginController implements Initializable {
     @FXML
     private Label label;
 
+
+    /**
+     *
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources){
         /*

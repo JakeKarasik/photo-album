@@ -15,11 +15,13 @@ public class Photos extends Application {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
 			Scene scene = new Scene(root);
+			scene.getStylesheets().add("resources/photos.css");
 
 			primaryStage.setTitle("Enter Authentication");
 			primaryStage.getIcons().add(new Image("resources/icon.png"));
             primaryStage.setScene(scene);
             primaryStage.setResizable(false);
+
             primaryStage.show();
 
 

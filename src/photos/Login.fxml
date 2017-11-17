@@ -6,24 +6,27 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="398.0" prefWidth="149.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="photos.LoginController">
-   <children>
-       <ImageView fx:id="imageview" fitHeight="400" fitWidth="350" pickOnBounds="true" preserveRatio="true" />
+<AnchorPane prefHeight="398.0" prefWidth="149.0" xmlns="http://javafx.com/javafx/8.0.141"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="photos.LoginController">
+    <children>
 
-       <Label layoutX="54.0" layoutY="55.0" text="Username">
-           <font><Font name="Roboto" size="18.0" /></font>
-       </Label>
-       <TextField layoutX="54.0" layoutY="82.0" prefHeight="25.0" prefWidth="229.0" />
+        <!-- Username -->
+        <Label layoutX="61.0" layoutY="55.0" style="-fx-font-family:Roboto; -fx-font-size:18.0" text="Username"/>
+        <TextField fx:id="user_in" layoutX="61.0" layoutY="78.0" prefHeight="25.0" prefWidth="229.0"/>
 
-       <Label fx:id="label" layoutX="54.0" layoutY="115.0" prefHeight="17.0" prefWidth="229.0" text="Password">
-         <font><Font name="Roboto" size="18.0" /></font>
-       </Label>
-       <PasswordField layoutX="54.0" layoutY="142.0" prefHeight="25.0" prefWidth="229.0" />
+        <!-- Password -->
+        <Label fx:id="label" layoutX="61.0" layoutY="123.0" prefHeight="17.0" prefWidth="229.0"
+               style="-fx-font-family:Roboto; -fx-font-size:18.0" text="Password"/>
+        <PasswordField fx:id="pass_in" layoutX="61.0" layoutY="146.0" prefHeight="25.0" prefWidth="229.0"/>
 
-       <Button layoutX="54.0" layoutY="200.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="229.0" text="Login">
-         <font><Font name="Roboto" size="18.0" /></font>
-       </Button>
-   </children>
+        <!-- Login -->
+        <Button fx:id="login" layoutX="61.0" layoutY="200.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="229.0"
+                style="-fx-font-family:Roboto; -fx-font-size:18.0" text="Login"/>
+
+        <!-- Misc. -->
+        <ImageView fx:id="imageview" fitHeight="155.0" fitWidth="350" layoutY="245.0" pickOnBounds="true"
+                   preserveRatio="true"/>
+
+    </children>
 </AnchorPane>
