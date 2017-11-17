@@ -3,6 +3,7 @@ package model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -41,21 +42,29 @@ public class Album  {
      */
     public void setTitle(String new_title){ this.album_title = new_title; }
 
-
     /**
      * Adds photo object to list photos
      * @param path Path of our photo to add
+     * @return False if path is invalid, True otherwise
      */
-    public void addPhoto(String path){
-        URL check = getClass().getResource("../" + path);
+    public boolean addPhoto(String path){
+        URL check = null;
 
-        if(check == null){
-            System.out.println("Invalid path");
-        }else{
-            Photo new_photo = new Photo(path);
-            photos.add(new_photo);
-            System.out.println("Photo success");
+        if(check != null){
+            System.out.println("Invalid path given");
+            return false;
         }
+        Photo new_photo = new Photo(path);
+        photos.add(new_photo);
+        System.out.println("Photo import succeeded: " + path);
+        return true;
+    }
+
+    public boolean addPhoto(File file){
+        Photo new_photo = new Photo(file);
+        photos.add(new_photo);
+        System.out.println("Photo import succeeded: " + file.getAbsolutePath());
+        return true;
     }
 
     /**

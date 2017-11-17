@@ -1,4 +1,5 @@
 package photos;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.*;
 import model.*;
 
@@ -12,6 +13,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
 import javafx.scene.text.TextAlignment;
+
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -24,6 +27,8 @@ public class GeneralController implements Initializable {
     User current_user;
 
 
+    @FXML
+    private AnchorPane fx_anchor;
     @FXML
     private ScrollPane fx_scrollpane;
 
@@ -52,9 +57,13 @@ public class GeneralController implements Initializable {
         tiles.setPadding(new Insets(10,10,10,10));
         current_user = null;
         stock_photos = new Album("stock", current_user);
+        /*
         for(int i = 1; i < 7; i++){
             stock_photos.addPhoto("resources/stock/stock-" + i + ".jpg");
         }
+        */
+
+
 
         for(int i = 1; i < 7; i++){
             Image image = new Image("resources/stock/stock-" + i + ".jpg", 120, 120, false, false);
@@ -76,8 +85,20 @@ public class GeneralController implements Initializable {
         fx_scrollpane.setContent(tiles);
         fx_scrollpane.setPannable(true);
 
+    }
 
-
+    public void getPath(){
+        Stage fc_stage = (Stage)fx_anchor.getScene().getWindow();
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Choose Image");
+        File file = fc.showOpenDialog(fc_stage);
+        /*
+        String path = fc.showOpenDialog(fc_stage).getAbsolutePath();
+        System.out.println(path);
+        Image img = new Image("file:"+path);
+        fx_imageviewer.setImage(img);
+        */
+        stock_photos.addPhoto(file);
 
     }
 }

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="250.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.141"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="photos.MoveCopyController">
+    <children>
+
+        <!-- Displays selected image to move/copy -->
+        <Label layoutX="14.0" layoutY="14.0" style="-fx-font-family:Roboto; -fx-font-size:18.0" text="Selected Image:"/>
+        <TextField fx:id="fx_selected_image" editable="false" layoutX="14.0" layoutY="45.0" prefHeight="35.0"
+                   prefWidth="266.0"/>
+
+        <!-- Choose destination to move/copy -->
+        <Label layoutX="14.0" layoutY="102.0" style="-fx-font-family:Roboto; -fx-font-size:18.0" text="Destination:"/>
+        <ChoiceBox fx:id="fx_choices" layoutX="11.0" layoutY="134.0" prefHeight="30.0" prefWidth="266.0"/>
+
+        <!-- Functionality -->
+        <Button fx:id="fx_move" layoutX="14.0" layoutY="192.0" mnemonicParsing="false" prefHeight="44.0"
+                prefWidth="82.0"
+                style="-fx-font-family:Roboto; -fx-font-size:18.0" text="Move"/>
+        <Button fx:id="fx_copy" layoutX="106.0" layoutY="192.0" mnemonicParsing="false" prefHeight="44.0"
+                prefWidth="82.0"
+                style="-fx-font-family:Roboto; -fx-font-size:18.0" text="Copy"/>
+        <Button fx:id="fx_cancel" layoutX="195.0" layoutY="192.0" mnemonicParsing="false" prefHeight="44.0"
+                prefWidth="82.0"
+                style="-fx-font-family:Roboto; -fx-font-size:18.0" text="Cancel"/>
+    </children>
+</AnchorPane>
