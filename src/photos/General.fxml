@@ -8,68 +8,52 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="475.0"
-            prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="fx_anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="795.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="photos.GeneralController">
     <children>
 
         <!-- ScrollPane for albums/image thumbnails -->
-        <ScrollPane layoutX="14.0" layoutY="14.0" prefHeight="350.0" prefWidth="290.0">
-            <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="343.0" prefWidth="286.0"/>
-            </content>
-        </ScrollPane>
+        <ScrollPane fx:id="fx_scrollpane" layoutX="14.0" layoutY="14.0" prefHeight="350.0" prefWidth="290.0" />
 
-        <!-- Logout -->
-        <Button layoutX="14.0" layoutY="368.0" mnemonicParsing="false" prefHeight="96.0" prefWidth="61.0" text="logout"
-                style="-fx-font-family:Roboto; -fx-font-size:12.0"/>
+        <!-- Logout & go back-->
+        <Button fx:id="fx_logout" layoutX="14.0" layoutY="428.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="61.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="logout" />
+        <Button fx:id="fx_back" layoutX="14.0" layoutY="384.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="61.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="back" />
 
         <!-- Album options -->
-        <Label layoutX="167.0" layoutY="369.0" text="Album Options" style="-fx-font-family:Roboto; -fx-font-size:12.0"/>
-        <Button layoutX="100.0" layoutY="386.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="65.0" text="create"
-                style="-fx-font-family:Roboto; -fx-font-size:12.0"/>
-        <Button layoutX="170.0" layoutY="386.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="65.0" text="rename"
-                style="-fx-font-family:Roboto; -fx-font-size:12.0"/>
-        <Button layoutX="239.0" layoutY="386.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="65.0" text="delete"
-                style="-fx-font-family:Roboto; -fx-font-size:12.0"/>
-        <Button layoutX="100.0" layoutY="427.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="100.0"
-                text="search" style="-fx-font-family:Roboto; -fx-font-size:12.0"/>
-        <Button layoutX="203.0" layoutY="427.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="100.0"
-                text="save search" style="-fx-font-family:Roboto; -fx-font-size:12.0"/>
+        <Label  layoutX="167.0" layoutY="369.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="Album Options" />
+        <Button fx:id="fx_create" layoutX="100.0" layoutY="386.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="65.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="create" />
+        <Button fx:id="fx_rename" layoutX="170.0" layoutY="386.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="65.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="rename" />
+        <Button fx:id="fx_delete_album" layoutX="239.0" layoutY="386.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="65.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="delete" />
+        <Button fx:id="fx_search" layoutX="100.0" layoutY="427.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="100.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="search" />
+        <Button fx:id="fx_save_search" layoutX="203.0" layoutY="427.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="100.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="save search" />
 
         <!-- Selected image display -->
-        <Pane layoutX="333.0" layoutY="14.0" prefHeight="350.0" prefWidth="450.0"
-              style="-fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;">
+        <Pane layoutX="333.0" layoutY="14.0" prefHeight="350.0" prefWidth="450.0" style="-fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;">
             <children>
-                <ImageView fitHeight="350.0" fitWidth="450.0" pickOnBounds="true" preserveRatio="true"/>
+                <ImageView fx:id="fx_imageviewer" fitHeight="350.0" fitWidth="450.0" pickOnBounds="true" preserveRatio="true" />
             </children>
         </Pane>
 
         <!-- Image metadata -->
-        <Label layoutX="334.0" layoutY="370.0" text="Name:" style="-fx-font-family:Roboto; -fx-font-size:12.0"/>
-        <Label layoutX="334.0" layoutY="390.0" text="Date:" style="-fx-font-family:Roboto; -fx-font-size:12.0"/>
-        <Label layoutX="334.0" layoutY="410.0" text="Tags:"/>
-        <Label layoutX="372.0" layoutY="370.0" prefHeight="17.0" prefWidth="220.0"/>
-        <Label layoutX="372.0" layoutY="390.0" prefHeight="17.0" prefWidth="220.0"/>
-        <TextArea layoutX="366.0" layoutY="410.0" prefHeight="53.0" prefWidth="227.0"/>
+        <Label layoutX="334.0" layoutY="367.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="Name:" />
+        <Label layoutX="334.0" layoutY="387.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="Caption:" />
+        <Label layoutX="334.0" layoutY="407.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="Date:" />
+        <Label layoutX="334.0" layoutY="427.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="Tags:" />
+        <Label fx:id="fx_name" layoutX="372.0" layoutY="367.0" prefHeight="17.0" prefWidth="220.0" />
+        <Label fx:id="fx_caption" layoutX="383.0" layoutY="387.0" prefHeight="17.0" prefWidth="209.0" />
+        <Label fx:id="fx_date" layoutX="365.0" layoutY="407.0" prefHeight="17.0" prefWidth="227.0" />
+        <TextArea fx:id="fx_tags" layoutX="366.0" layoutY="427.0" prefHeight="36.0" prefWidth="227.0" />
 
         <!-- Image options -->
-        <Label layoutX="621.0" layoutY="369.0" text="Displayed Photo Options"
-               style="-fx-font-family:Roboto; -fx-font-size:12.0"/>
-        <Button layoutX="693.0" layoutY="386.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="44.0" text="&lt;--"
-                style="-fx-font-family:Roboto; -fx-font-size:12.0"/>
-        <Button layoutX="738.0" layoutY="386.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="44.0" text="--&gt;"
-                style="-fx-font-family:Roboto; -fx-font-size:12.0"/>
-        <Button layoutX="597.0" layoutY="386.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="90.0"
-                text="edit photo" style="-fx-font-family:Roboto; -fx-font-size:12.0"/>
-        <Button layoutX="597.0" layoutY="427.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="90.0" text="delete"
-                style="-fx-font-family:Roboto; -fx-font-size:12.0"/>
-        <Button layoutX="693.0" layoutY="427.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="90.0"
-                text="move/copy" style="-fx-font-family:Roboto; -fx-font-size:12.0"/>
+        <Label layoutX="621.0" layoutY="369.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="Displayed Photo Options" />
+        <Button fx:id="fx_prev" layoutX="693.0" layoutY="386.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="44.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="&lt;--" />
+        <Button fx:id="fx_next" layoutX="738.0" layoutY="386.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="44.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="--&gt;" />
+        <Button fx:id="fx_edit" layoutX="597.0" layoutY="386.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="90.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="edit photo" />
+        <Button fx:id="fx_delete_photo" layoutX="597.0" layoutY="427.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="90.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="delete" />
+        <Button fx:id="fx_move_copy" layoutX="693.0" layoutY="427.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="90.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="move/copy" />
 
         <!-- Misc. -->
-        <Separator layoutX="304.0" layoutY="17.0" orientation="VERTICAL" prefHeight="428.0" prefWidth="29.0"/>
-        <Separator layoutX="75.0" layoutY="368.0" orientation="VERTICAL" prefHeight="96.0" prefWidth="29.0"/>
+        <Separator layoutX="304.0" layoutY="17.0" orientation="VERTICAL" prefHeight="428.0" prefWidth="29.0" />
+        <Separator layoutX="75.0" layoutY="368.0" orientation="VERTICAL" prefHeight="96.0" prefWidth="29.0" />
     </children>
 </AnchorPane>
