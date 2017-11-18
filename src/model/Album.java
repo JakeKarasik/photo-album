@@ -16,7 +16,7 @@ public class Album implements Serializable {
     private String album_title;
     private User owner;
     public final String storeDir = "database/user";
-    public final String storeFile = "-photos.ser";
+    public final String storeFile = ".ser";
 
     // List of photos contained by album
     public transient ObservableList<Photo> photos = FXCollections.observableArrayList();
@@ -76,7 +76,7 @@ public class Album implements Serializable {
     public boolean savePhotos() {
         try{
             String username = Admin.users.get(Admin.user_id).getUser();
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(storeDir + File.separator + username + storeFile));
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(storeDir + File.separator + username + getTitle() + storeFile));
             ArrayList<Photo> copy = new ArrayList<Photo>(photos);
             oos.writeObject(copy);
             oos.close();
@@ -93,7 +93,7 @@ public class Album implements Serializable {
     public boolean loadPhotos(){
         try{
             String username = Admin.users.get(Admin.user_id).getUser();
-            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(storeDir + File.separator + username + storeFile));
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(storeDir + File.separator + username + getTitle() +  storeFile));
             ArrayList<Photo> read = (ArrayList<Photo>)(ois.readObject());
             photos = FXCollections.observableArrayList(read);
             return true;
