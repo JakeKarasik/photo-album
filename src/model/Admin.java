@@ -12,21 +12,23 @@ import java.util.ArrayList;
  */
 @SuppressWarnings({"unchecked", "Duplicates"})
 public class Admin{
-    public static ObservableList<User> users = FXCollections.observableArrayList();
+    public  ObservableList<User> users = FXCollections.observableArrayList();
 
-    public static final String storeDir = "database";
-    public static final String storeFile = "users.ser";
+    public  final String storeDir = "database";
+    public  final String storeFile = "users.ser";
 
     /**
-     * Admin is non-instantiable
+     * Admin loads its users when temporary created
      */
-    private Admin(){}
+    public Admin(){
+        loadUser();
+    }
 
     /**
      * Serializes list of users
      * @return True if successful, false otherwise
      */
-    public static boolean saveUser() {
+    public  boolean saveUser() {
         try{
             ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(storeDir + File.separator + storeFile));
             oos.writeObject(new ArrayList<>(users));
@@ -41,7 +43,7 @@ public class Admin{
      * Deserializes list of users
      * @return True if successful, false otherwise
      */
-    public static boolean loadUser(){
+    public  boolean loadUser(){
         try{
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(storeDir + File.separator + storeFile));
             ArrayList<User> read = (ArrayList<User>)(ois.readObject());
@@ -57,7 +59,7 @@ public class Admin{
      * @param username Username of new user
      * @param password Password of new user
      */
-    public static void createUser(String username, String password, String verify){
+    public  void createUser(String username, String password, String verify){
         User new_user = new User(username, password);
         if(username.equals("admin")){
             Alert alert = new Alert(Alert.AlertType.ERROR, "Not allowed to create an admin");
@@ -89,7 +91,7 @@ public class Admin{
      * @param index Index of User object to be removed
      */
     // Remove User object from list, given index
-    public static boolean deleteUser(int index){
+    public  boolean deleteUser(int index){
         try{
             users.remove(index);
             saveUser();
