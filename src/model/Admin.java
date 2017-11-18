@@ -12,10 +12,15 @@ import java.util.ArrayList;
  */
 @SuppressWarnings({"unchecked", "Duplicates"})
 public class Admin{
+
+    // List of users managed by admin
     public static ObservableList<User> users = FXCollections.observableArrayList();
 
+    // Data storage location
     public static final String storeDir = "database";
     public static String storeFile = "users.ser";
+
+    // ID of active user
     public static int user_id  = -1;
 
     /**
@@ -23,15 +28,11 @@ public class Admin{
      */
     private Admin(){}
 
-
-    private void writeObject(ObjectOutputStream oos) throws IOException{
-
-    }
     /**
-     * Serializes list of users
+     * Serializes list of users and active user ID
      * @return True if successful, false otherwise
      */
-    public static boolean saveUser() {
+    public static boolean saveUsers() {
         try{
             ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(storeDir + File.separator + storeFile));
             oos.writeObject(new ArrayList<>(users));
@@ -42,16 +43,15 @@ public class Admin{
             oos.close();
             return true;
         }catch(Exception e){
-            e.printStackTrace();
             return false;
         }
     }
 
     /**
-     * Deserializes list of users
+     * Deserializes list of users and active user ID
      * @return True if successful, false otherwise
      */
-    public static boolean loadUser(){
+    public static boolean loadUsers(){
         try{
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(storeDir + File.separator + storeFile));
             ArrayList<User> read = (ArrayList<User>)(ois.readObject());
@@ -66,6 +66,11 @@ public class Admin{
         }
     }
 
+    /**
+     * Given a User object, checks its credentials, sets active user ID on success
+     * @param input User object created by login form
+     * @return True if credentials match, false otherwise
+     */
     public static boolean authenticated(User input){
         boolean exists = users.contains(input);
 
@@ -98,6 +103,7 @@ public class Admin{
      * Creates a user object and adds it to list of users
      * @param username Username of new user
      * @param password Password of new user
+     * @param verify Password of new user to match
      */
     public static void createUser(String username, String password, String verify){
         User new_user = new User(username, password);
@@ -123,7 +129,7 @@ public class Admin{
             return;
         }
         users.add(new_user);
-        saveUser();
+        saveUsers();
     }
 
     /**
@@ -134,7 +140,7 @@ public class Admin{
     public static boolean deleteUser(int index){
         try{
             users.remove(index);
-            saveUser();
+            saveUsers();
             return true;
         }catch(Exception e){
             return false;

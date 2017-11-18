@@ -11,13 +11,16 @@ import java.util.Calendar;
  */
 public class Photo implements Serializable {
 
+    // Metadata
     private String path;
     private String caption;
     private ArrayList<Tags> photo_tags;
     private Calendar last_modified;
 
-    private ArrayList<Album> albums;
 
+    public String getPath(){
+        return path;
+    }
     /**
      * Creates Photo object from given file
      * @param file File passed in from file chooser

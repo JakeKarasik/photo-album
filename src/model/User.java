@@ -2,9 +2,6 @@ package model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-
 import java.io.*;
 import java.util.ArrayList;
 
@@ -74,15 +71,29 @@ public class User implements Serializable {
         }
     }
 
+    /**
+     * Adds a new album to list
+     * @param new_album New album to be added
+     */
     public void addAlbum(Album new_album){
-
+        albums.add(new_album);
+        saveUser();
     }
 
+    /**
+     * ALlows ListView to print out usernames
+     * @return String
+     */
     @Override
     public String toString(){
         return this.username;
     }
 
+    /**
+     * Allows contains() and indexOf() to search for users
+     * @param s User to be compared to
+     * @return True if match found, false otherwise
+     */
     @Override
     public boolean equals(Object s){
         return ( s != null && s instanceof User) && ( this.username.equalsIgnoreCase(((User)s).username) );

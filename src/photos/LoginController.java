@@ -27,7 +27,7 @@ public class LoginController{
      */
     public void login(){
         // Get user input
-        Admin.loadUser();
+        Admin.loadUsers();
         String user_input = user_in.getText();
         String pass_input = pass_in.getText();
         String user;

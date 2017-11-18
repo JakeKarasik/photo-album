@@ -37,7 +37,7 @@ public class AdminController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources){
-        Admin.loadUser();
+        Admin.loadUsers();
         showUsers();
     }
 

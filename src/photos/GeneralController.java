@@ -75,9 +75,35 @@ public class GeneralController implements Initializable {
             label2.setTextAlignment(TextAlignment.CENTER);
             label2.setPrefWidth(120.0);
             label2.setWrapText(true); tiles.getChildren().addAll(label2);
+            label2.setId(Integer.toString(i));
             label2.setOnMouseClicked(new EventHandler<MouseEvent>(){
                 @Override
                 public void handle(MouseEvent arg0) {
+                    tiles.getChildren().clear();
+                    Album cur_album = current_user.albums.get(Integer.parseInt(label2.getId()));
+
+                    cur_album.loadPhotos();
+                    int size2 = cur_album.photos.size();
+                    for(int j = 0; j < size2; j++){
+                        Image image = new Image(cur_album.photos.get(j).getPath(), 120, 120, false, false);
+                        ImageView imv = new ImageView(image);
+                        Image img = new Image(cur_album.photos.get(j).getPath());
+                        Label label2 = new Label(cur_album.photos.get(j).getPath());
+                        label2.setGraphic(imv);
+                        label2.setContentDisplay(ContentDisplay.TOP);
+                        label2.setTextAlignment(TextAlignment.CENTER);
+                        label2.setPrefWidth(120.0);
+                        label2.setWrapText(true); tiles.getChildren().addAll(label2);
+                        label2.setOnMouseClicked(new EventHandler<MouseEvent>(){
+                            @Override
+                            public void handle(MouseEvent arg0) {
+                                fx_imageviewer.setImage(img);
+                            }
+                        });
+                    }
+                    fx_scrollpane.setContent(tiles);
+                    fx_scrollpane.setPannable(true);
+
 
                 }
             });

@@ -2,20 +2,24 @@ package model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import java.io.File;
-import java.io.Serializable;
-import java.net.URL;
+import java.io.*;
+import java.util.ArrayList;
 
 /**
  * This class creates an album and defines its functionality
  * @author Benjamin Ker (bk375)
  */
+@SuppressWarnings({"unchecked", "Duplicates"})
 public class Album implements Serializable {
 
+    // Metadata
     private String album_title;
     private User owner;
+    public final String storeDir = "database/user";
+    public final String storeFile = "-photos.ser";
 
-    transient ObservableList<Photo> photos = FXCollections.observableArrayList();
+    // List of photos contained by album
+    public transient ObservableList<Photo> photos = FXCollections.observableArrayList();
 
     /**
      * Creates our album and assigns it a title and owner
@@ -26,6 +30,12 @@ public class Album implements Serializable {
         this.album_title = title;
         owner = user;
     }
+
+    /**
+     * Gets owner of album selected
+     * @return Returns User owner
+     */
+    public User getOwner(){ return owner; }
 
     /**
      * Gets title of album selected
@@ -42,19 +52,56 @@ public class Album implements Serializable {
     /**
      * Adds photo object to list photos
      * @param path Path of our photo to add
-     * @return False if path is invalid, True otherwise
      */
-    public boolean addPhoto(String path){
+    public void addPhoto(String path){
         Photo new_photo = new Photo(path);
         photos.add(new_photo);
-        return true;
+        savePhotos();
     }
 
-    public boolean addPhoto(File file){
+    /**
+     * Adds photo object to list photos
+     * @param file File of photo to add
+     */
+    public void addPhoto(File file){
         Photo new_photo = new Photo(file);
         photos.add(new_photo);
-        System.out.println("Photo import succeeded: " + file.getAbsolutePath());
-        return true;
+        savePhotos();
+    }
+
+    /**
+     * Serializes list of photos
+     * @return True if successful, false otherwise
+     */
+    public boolean savePhotos() {
+        try{
+            String username = Admin.users.get(Admin.user_id).getUser();
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(storeDir + File.separator + username + storeFile));
+            ArrayList<Photo> copy = new ArrayList<Photo>(photos);
+            oos.writeObject(copy);
+            oos.close();
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
+
+    /**
+     * Deserializes list of albums
+     * @return True if successful, false otherwise
+     */
+    public boolean loadPhotos(){
+        try{
+            String username = Admin.users.get(Admin.user_id).getUser();
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(storeDir + File.separator + username + storeFile));
+            ArrayList<Photo> read = (ArrayList<Photo>)(ois.readObject());
+            photos = FXCollections.observableArrayList(read);
+            return true;
+        }catch(Exception e){
+            e.printStackTrace();
+            System.out.println("HI");
+            return false;
+        }
     }
 
     /**
@@ -62,7 +109,8 @@ public class Album implements Serializable {
      * @param index Index to delete
      */
     public void deletePhoto(int index){
-
+        photos.remove(index);
+        savePhotos();
     }
 
 }
