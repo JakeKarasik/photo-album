@@ -7,9 +7,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -23,7 +25,9 @@ public class LoginController implements Initializable {
     private ImageView imageview;
 
     @FXML
-    private Label label;
+    private TextField user_in;
+
+    @FXML TextField pass_in;
 
     @FXML
     private Button login;
@@ -39,21 +43,37 @@ public class LoginController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources){
-        /*
-        Image image = new Image("resources/placeholder.png");
-        imageview1.setImage(image);
-        */
 
     }
 
     public void login(){
-        Stage stage = (Stage)fx_anchor.getScene().getWindow();
+        Stage stage2 = (Stage)fx_anchor.getScene().getWindow();
+
+
+        //Stage stage = new Stage();
+        //stage.initModality(Modality.WINDOW_MODAL);
+        //stage.initOwner(stage2);
+
+
+        String user_input = user_in.getText();
+        String pass_input = pass_in.getText();
+        String next_fxml = "General.fxml";
+        String next_title = "Photo Library";
+
+        if(user_input.equals("admin") && pass_input.equals("admin")){
+            next_fxml = "Admin.fxml";
+            next_title = "Administrator Dashboard";
+        }
+
+        Photos.newStage(stage2, next_fxml, next_title);
+        /*
+
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("General.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource(next_fxml));
             Scene scene = new Scene(root);
             scene.getStylesheets().add("resources/photos.css");
 
-            stage.setTitle("Photo Library");
+            stage.setTitle(next_title);
             stage.getIcons().add(new Image("resources/icon.png"));
             stage.setScene(scene);
             stage.setResizable(false);
@@ -62,5 +82,6 @@ public class LoginController implements Initializable {
         }catch(Exception e){
             e.printStackTrace();
         }
+        */
     }
 }
