@@ -35,18 +35,16 @@ public class AdminController implements Initializable {
      * Deserializes our user list and displays usernames in ListView
      * {@inheritDoc}
      */
-
-    Admin admin;
     @Override
     public void initialize(URL location, ResourceBundle resources){
-        admin = new Admin();
+        Admin.loadUser();
         showUsers();
     }
 
     /**
      * Displays usernames in a ListView
      */
-    public void showUsers(){ user_list.setItems(admin.users); }
+    public void showUsers(){ user_list.setItems(Admin.users); }
 
     /**
      * Gets text from relevant TextFields and passes it into Admin.createUser
@@ -55,7 +53,7 @@ public class AdminController implements Initializable {
         String user_in = new_username.getText();
         String pass_in = new_password.getText();
         String ver_pass = verify_password.getText();
-        admin.createUser(user_in, pass_in, ver_pass);
+        Admin.createUser(user_in, pass_in, ver_pass);
     }
 
     /**
@@ -63,7 +61,7 @@ public class AdminController implements Initializable {
      */
     public void rmUser(){
         int index = user_list.getSelectionModel().getSelectedIndex();
-        admin.deleteUser(index);
+        Admin.deleteUser(index);
     }
 
     /**

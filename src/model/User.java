@@ -75,8 +75,7 @@ public class User implements Serializable {
 
 
     public boolean authenticated(){
-        Admin temp_admin = new Admin();
-        boolean exists = temp_admin.users.contains(this);
+        boolean exists = Admin.users.contains(this);
 
         if(this.username.isEmpty() || this.password.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "All fields must be filled");
@@ -91,7 +90,7 @@ public class User implements Serializable {
             return false;
         }
 
-        User cur_user = temp_admin.users.get(temp_admin.users.indexOf(this));
+        User cur_user = Admin.users.get(Admin.users.indexOf(this));
 
         if(!cur_user.password.equals(this.password)){
             Alert alert = new Alert(Alert.AlertType.ERROR, "Password does not match");
