@@ -1,6 +1,7 @@
 package model;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -8,7 +9,7 @@ import java.util.Calendar;
  * This class creates a photo and defines functionality
  * @author Benjamin Ker (bk375)
  */
-public class Photo{
+public class Photo implements Serializable {
 
     private String path;
     private String caption;

@@ -8,12 +8,14 @@ import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
+import java.io.Serializable;
+
 /**
  * This class initializes the program and implements scene switching
  * @author Benjamin Ker (bk375)
  */
 @SuppressWarnings("WeakerAccess")
-public class Photos extends Application {
+public class Photos extends Application implements Serializable {
     /**
      * Calls switchStage to start the program
      * @param primaryStage Stage argument to call switchStage on
@@ -38,11 +40,11 @@ public class Photos extends Application {
             Scene scene = new Scene(root);
             scene.getStylesheets().add("resources/photos.css");
 
+
             swap_stage.setTitle(title);
             swap_stage.getIcons().add(new Image("resources/icon.png"));
             swap_stage.setScene(scene);
             swap_stage.setResizable(false);
-
             swap_stage.show();
         }catch(Exception e){
             e.printStackTrace();

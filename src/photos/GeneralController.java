@@ -49,6 +49,9 @@ public class GeneralController implements Initializable {
     @FXML
     private TextArea fx_tags;
 
+
+    private void setUser() { current_user = Admin.users.get(Admin.user_id); }
+
     /**
      *
      * @param location
@@ -57,18 +60,41 @@ public class GeneralController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources){
 
+
         TilePane tiles = new TilePane(10, 10); tiles.setPrefColumns(2);
         tiles.setPadding(new Insets(10,10,10,10));
-        current_user = null;
-        stock_photos = new Album("stock", current_user);
+        setUser();
+        current_user.loadUser();
+        int size = current_user.albums.size();
+        for(int i = 0; i < size; i++){
+            Image image = new Image("resources/folder.png", 120, 120, false, false);
+            ImageView imv = new ImageView(image);
+            Label label2 = new Label(current_user.albums.get(i).getTitle());
+            label2.setGraphic(imv);
+            label2.setContentDisplay(ContentDisplay.TOP);
+            label2.setTextAlignment(TextAlignment.CENTER);
+            label2.setPrefWidth(120.0);
+            label2.setWrapText(true); tiles.getChildren().addAll(label2);
+            label2.setOnMouseClicked(new EventHandler<MouseEvent>(){
+                @Override
+                public void handle(MouseEvent arg0) {
+
+                }
+            });
+        }
+        fx_scrollpane.setContent(tiles);
+        fx_scrollpane.setPannable(true);
+
+
+
+
+
         /*
         for(int i = 1; i < 7; i++){
             stock_photos.addPhoto("resources/stock/stock-" + i + ".jpg");
         }
         */
-
-
-
+        /* Testing - do not remove
         for(int i = 1; i < 7; i++){
             Image image = new Image("resources/stock/stock-" + i + ".jpg", 120, 120, false, false);
             ImageView imv = new ImageView(image);
@@ -88,6 +114,7 @@ public class GeneralController implements Initializable {
         }
         fx_scrollpane.setContent(tiles);
         fx_scrollpane.setPannable(true);
+        */
 
     }
 

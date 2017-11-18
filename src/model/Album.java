@@ -15,7 +15,7 @@ public class Album implements Serializable {
     private String album_title;
     private User owner;
 
-    ObservableList<Photo> photos = FXCollections.observableArrayList();
+    transient ObservableList<Photo> photos = FXCollections.observableArrayList();
 
     /**
      * Creates our album and assigns it a title and owner
@@ -45,15 +45,8 @@ public class Album implements Serializable {
      * @return False if path is invalid, True otherwise
      */
     public boolean addPhoto(String path){
-        URL check = null;
-
-        if(check != null){
-            System.out.println("Invalid path given");
-            return false;
-        }
         Photo new_photo = new Photo(path);
         photos.add(new_photo);
-        System.out.println("Photo import succeeded: " + path);
         return true;
     }
 

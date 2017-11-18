@@ -16,18 +16,16 @@ import java.util.ArrayList;
 public class User implements Serializable {
 
     public final String storeDir = "database/user";
-    public final String storeFile = this.username + ".ser";
+    public final String storeFile = ".ser";
 
     private String username;
     private String password;
-    private boolean active;
 
-    private transient ObservableList<Album> albums = FXCollections.observableArrayList();
+    public transient ObservableList<Album> albums = FXCollections.observableArrayList();
 
     public User(String user, String pass){
         this.username = user;
         this.password = pass;
-        this.active = false;
     }
 
     public String getUser(){
@@ -36,7 +34,6 @@ public class User implements Serializable {
     public String getPass(){
         return password;
     }
-    public boolean active() { return active; }
 
 
     /**
@@ -45,8 +42,9 @@ public class User implements Serializable {
      */
     public boolean saveUser() {
         try{
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(storeDir + File.separator + storeFile));
-            oos.writeObject(new ArrayList<>(albums));
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(storeDir + File.separator + getUser() + storeFile));
+            ArrayList<Album> copy = new ArrayList<>(albums);
+            oos.writeObject(copy);
             oos.close();
             return true;
         }catch(Exception e){
@@ -60,47 +58,24 @@ public class User implements Serializable {
      */
     public boolean loadUser(){
         try{
-            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(storeDir + File.separator + storeFile));
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(storeDir + File.separator + getUser() + storeFile));
             ArrayList<Album> read = (ArrayList<Album>)(ois.readObject());
             albums = FXCollections.observableArrayList(read);
             return true;
         }catch(Exception e){
+            Album stock = new Album("stock", this);
+            albums = FXCollections.observableArrayList();
+            albums.add(stock);
+            for(int i = 1; i < 7; i++){
+                stock.addPhoto("resources/stock/stock-" + i + ".jpg");
+            }
+            saveUser();
             return false;
         }
     }
 
-    public void createAlbum(){
+    public void addAlbum(Album new_album){
 
-    }
-
-
-    public boolean authenticated(){
-        boolean exists = Admin.users.contains(this);
-
-        if(this.username.isEmpty() || this.password.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "All fields must be filled");
-            alert.setHeaderText("Invalid Input");
-            alert.showAndWait();
-            return false;
-        }
-        else if(!exists){
-            Alert alert = new Alert(Alert.AlertType.ERROR, "User does not exist");
-            alert.setHeaderText("Invalid Input");
-            alert.showAndWait();
-            return false;
-        }
-
-        User cur_user = Admin.users.get(Admin.users.indexOf(this));
-
-        if(!cur_user.password.equals(this.password)){
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Password does not match");
-            alert.setHeaderText("Invalid Input");
-            alert.showAndWait();
-            return false;
-        }
-        this.active = true;
-
-        return true;
     }
 
     @Override
