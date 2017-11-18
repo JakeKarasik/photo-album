@@ -4,6 +4,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+/**
+ * This class creates a photo and defines functionality
+ * @author Benjamin Ker (bk375)
+ */
 public class Photo{
 
     private String path;

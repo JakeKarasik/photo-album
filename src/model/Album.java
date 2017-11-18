@@ -2,18 +2,15 @@ package model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.io.File;
-import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class creates an album and defines its functionality
  * @author Benjamin Ker (bk375)
  */
-public class Album  {
+public class Album implements Serializable {
 
     private String album_title;
     private User owner;

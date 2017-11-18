@@ -1,4 +1,5 @@
 package photos;
+
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.*;
 import model.*;
@@ -13,11 +14,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
 import javafx.scene.text.TextAlignment;
-
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * This class controls the photo library
+ * @author Benjamin Ker (bk375)
+ */
 public class GeneralController implements Initializable {
 
     // Stock photos

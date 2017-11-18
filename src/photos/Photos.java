@@ -8,6 +8,10 @@ import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
+/**
+ * This class initializes the program and implements scene switching
+ * @author Benjamin Ker (bk375)
+ */
 @SuppressWarnings("WeakerAccess")
 public class Photos extends Application {
     /**
