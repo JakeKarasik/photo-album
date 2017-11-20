@@ -8,6 +8,7 @@ import java.util.Calendar;
 /**
  * This class creates a photo and defines functionality
  * @author Benjamin Ker (bk375)
+ * @author Jake Karasik (jak451)
  */
 public class Photo implements Serializable {
 
@@ -18,15 +19,39 @@ public class Photo implements Serializable {
     private Calendar last_modified;
 
 
+    /**
+     * Gets the absolute path of photo
+     * @return String file path
+     */
     public String getPath(){
         return path;
     }
+
+    /**
+     * Gets the name of our photo
+     * @return String photo name
+     */
     public String getName() {
         File temp = new File(path);
         return temp.getName();
     }
+
+    /**
+     * Gets caption of our photo
+     * @return String photo caption
+     */
     public String getCaption(){ return caption; }
+
+    /**
+     * Gets date of our photo in a readable format
+     * @return String date of last modification
+     */
     public String getDate(){return last_modified.getTime().toString(); }
+
+    /**
+     * Sets the caption of our photo
+     * @param new_caption String to set photo caption to
+     */
     public void setCaption(String new_caption) { caption = new_caption; }
 
     /**

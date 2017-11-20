@@ -8,6 +8,7 @@ import java.util.ArrayList;
 /**
  * This class creates an album and defines its functionality
  * @author Benjamin Ker (bk375)
+ * @author Jake Karasik (jak451)
  */
 @SuppressWarnings({"unchecked", "Duplicates"})
 public class Album implements Serializable {

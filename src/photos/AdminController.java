@@ -9,18 +9,15 @@ import model.Admin;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-
 /**
  * This class controls the admin dashboard
  * @author Benjamin Ker (bk375)
+ * @author Jake Karasik (jak451)
  */
 @SuppressWarnings ("unchecked")
 public class AdminController implements Initializable {
     @FXML
     private AnchorPane fx_anchor;
-
-    @FXML
-    private Button delete_button, logout, create;
 
     @FXML
     private TextField new_username;
@@ -32,22 +29,17 @@ public class AdminController implements Initializable {
     private ListView user_list;
 
     /**
-     * Deserializes our user list and displays usernames in ListView
+     * Load our list of Users into the ListView
      * {@inheritDoc}
      */
     @Override
     public void initialize(URL location, ResourceBundle resources){
         Admin.loadUsers();
-        showUsers();
+        user_list.setItems(Admin.users);
     }
 
     /**
-     * Displays usernames in a ListView
-     */
-    public void showUsers(){ user_list.setItems(Admin.users); }
-
-    /**
-     * Gets text from relevant TextFields and passes it into Admin.createUser
+     * Gets text from relevant TextFields and creates a new user
      */
     public void newUser(){
         String user_in = new_username.getText();
@@ -57,7 +49,7 @@ public class AdminController implements Initializable {
     }
 
     /**
-     * Gets index of selected username and passes it to Admin.deleteUser
+     * Gets index of selected username and deletes it
      */
     public void rmUser(){
         int index = user_list.getSelectionModel().getSelectedIndex();

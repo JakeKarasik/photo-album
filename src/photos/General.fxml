@@ -14,8 +14,6 @@
 <AnchorPane fx:id="fx_anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="795.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="photos.GeneralController">
     <children>
 
-        <!-- Note: Don't need add photo/album; create button inside TilePane -->
-
         <!-- ScrollPane for albums/image thumbnails -->
         <ScrollPane fx:id="fx_scrollpane" layoutX="14.0" layoutY="14.0" pannable="true" prefHeight="350.0" prefWidth="290.0">
          <content>
@@ -58,6 +56,7 @@
         <Button fx:id="fx_delete_photo" disable="true" layoutX="597.0" layoutY="382.0" mnemonicParsing="false" onMouseClicked="#deletePhoto" prefHeight="36.0" prefWidth="90.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="delete" />
         <Button fx:id="fx_move_copy" disable="true" layoutX="693.0" layoutY="382.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="90.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="move/copy" />
         <Button fx:id="fx_edit_tags" disable="true" layoutX="597.0" layoutY="423.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="90.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="edit tags" />
+
         <!-- Misc. -->
         <Separator layoutX="304.0" layoutY="17.0" orientation="VERTICAL" prefHeight="428.0" prefWidth="29.0" />
         <Separator layoutX="75.0" layoutY="368.0" orientation="VERTICAL" prefHeight="96.0" prefWidth="29.0" />

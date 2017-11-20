@@ -8,6 +8,7 @@ import java.util.ArrayList;
 /**
  * This class creates Users and defines functionality
  * @author Benjamin Ker (bk375)
+ * @author Jake Karasik (jak451)
  */
 @SuppressWarnings({"unchecked", "Duplicates"})
 public class User implements Serializable {
