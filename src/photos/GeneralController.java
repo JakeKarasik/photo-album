@@ -29,7 +29,13 @@ public class GeneralController implements Initializable {
     User current_user;
 
     // Previously selected album/photo
-    int cur_index = -1;
+    //int cur_index = -1;
+
+    Label active_album = null;
+
+    Label active_photo = null;
+
+    Album album = null;
 
     @FXML
     private AnchorPane fx_anchor;
@@ -74,7 +80,7 @@ public class GeneralController implements Initializable {
         Album new_album = new Album(title, current_user);
         current_user.addAlbum(new_album);
         Label add_text = new Label(title);
-        addToTilePane(add_text,  "resources/folder.png", Integer.toString(current_user.albums.size()-1));
+        addToTilePane(add_text,  "resources/folder.png");
         add_text.setOnMouseClicked(e -> mouseHandler(e, add_text));
     }
 
@@ -86,46 +92,62 @@ public class GeneralController implements Initializable {
     private void mouseHandler(MouseEvent e, Label label){
         if(e.getClickCount() == 2){
             // Clear TilePane and begin loading photo thumbnails
+            album = current_user.albums.get(fx_tilepane.getChildren().indexOf(label)-1);
+            album.loadPhotos();
             fx_tilepane.getChildren().clear();
-            cur_index = -1;
-            Album cur_album = current_user.albums.get(Integer.parseInt(label.getId()));
-            cur_album.loadPhotos();
 
             // Create "Add New" label and add it to the TilePane
             Label add_text = new Label("Add New");
-            addToTilePane(add_text, "resources/add.png", "0");
+            addToTilePane(add_text, "resources/add.png");
             add_text.setOnMouseClicked(f -> addNewPhoto());
 
-            int size = cur_album.photos.size();
+            int size = album.photos.size();
 
             for(int j = 0; j < size; j++){
-                File temp = new File(cur_album.photos.get(j).getPath());
+                File temp = new File(album.photos.get(j).getPath());
+                int index = j;
 
                 Label thumb = new Label(temp.getName());
-                addToTilePane(thumb, temp.toURI().toString(), Integer.toString(-1));
+                addToTilePane(thumb, temp.toURI().toString());
                 Image img = new Image(temp.toURI().toString());
-                thumb.setOnMouseClicked(f -> setImageviewer(img));
+                thumb.setOnMouseClicked(f -> setImageviewer(thumb, img));
             }
-            cur_index = Integer.parseInt(label.getId());
         }else{
             // Deselect previously selected node if needed, mark clicked album as selected
-            if(cur_index >= 0){
-                Label prev = (Label)(fx_tilepane.getChildren().get(cur_index+1));
-                prev.setStyle("-fx-border-color:transparent");
+            if(active_album != null){
+                active_album.setStyle("-fx-border-color:transparent");
             }
-            label.setStyle("-fx-border-color: black");
-            cur_index = Integer.parseInt(label.getId());
+            active_album = label;
+            active_album.setStyle("-fx-border-color: black");
         }
+    }
+
+    public void deleteAlbum(){
+        int index = fx_tilepane.getChildren().indexOf(active_album);
+        fx_tilepane.getChildren().remove(index);
+        current_user.albums.remove(index-1);
+        current_user.saveUser();
+    }
+
+    public void deletePhoto(){
+        int index = fx_tilepane.getChildren().indexOf(active_photo);
+        fx_tilepane.getChildren().remove(index);
+        album.photos.remove(index-1);
+        album.savePhotos();
+        fx_imageviewer.setImage(null);
+        active_photo = null;
     }
 
     // PHOTO MANAGEMENT METHODS //
 
     /**
      * Helper method to mouseHandler
-     * @param img Image to set ImageViewer to
+     * @param img File to set ImageViewer to
      */
-    private void setImageviewer(Image img){ fx_imageviewer.setImage(img); }
-
+    private void setImageviewer(Label thumb, Image img){
+        fx_imageviewer.setImage(img);
+        active_photo = thumb;
+    }
 
     /**
      * Adds a new album given input from TextInputDialog
@@ -137,13 +159,11 @@ public class GeneralController implements Initializable {
 
         File file = fc.showOpenDialog(fc_stage);
         if(file != null){
-
-            Album current_album = current_user.albums.get(cur_index);
-            current_album.addPhoto(file);
+            album.addPhoto(file);
             Label add_text = new Label(file.getName());
-            addToTilePane(add_text, file.toURI().toString(), Integer.toString(current_album.photos.size()-1));
+            addToTilePane(add_text, file.toURI().toString());
             Image img = new Image(file.toURI().toString());
-            add_text.setOnMouseClicked(f -> setImageviewer(img));
+            add_text.setOnMouseClicked(f -> setImageviewer(add_text, img));
         }
     }
 
@@ -159,9 +179,8 @@ public class GeneralController implements Initializable {
      * Adds an album/image thumbnail to the TilePane
      * @param label Label to add
      * @param path Path of image to display
-     * @param id Sets ID of label so it is accessible later
      */
-    private void addToTilePane(Label label, String path, String id){
+    private void addToTilePane(Label label, String path){
         Image img = new Image(path, 120, 120, false, false);
         ImageView add_imv = new ImageView(img);
         label.setGraphic(add_imv);
@@ -169,7 +188,6 @@ public class GeneralController implements Initializable {
         label.setTextAlignment(TextAlignment.CENTER);
         label.setPrefWidth(120.0);
         label.setWrapText(true);
-        label.setId(id);
         fx_tilepane.getChildren().add(label);
     }
 
@@ -186,7 +204,7 @@ public class GeneralController implements Initializable {
 
         // Create "Add New" label and add it to the TilePane
         Label add_text = new Label("Add New");
-        addToTilePane(add_text, "resources/add.png", "0");
+        addToTilePane(add_text, "resources/add.png");
         add_text.setOnMouseClicked(e -> addNewAlbum());
 
         // Display the albums of User
@@ -195,7 +213,7 @@ public class GeneralController implements Initializable {
 
             // Display albums as labels with icon and text
             Label icon = new Label(current_user.albums.get(i).getTitle());
-            addToTilePane(icon, "resources/folder.png", Integer.toString(i));
+            addToTilePane(icon, "resources/folder.png");
 
             // Set behavior when clicked
             icon.setOnMouseClicked(e -> mouseHandler(e, icon));
