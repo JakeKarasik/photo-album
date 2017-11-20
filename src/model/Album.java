@@ -61,18 +61,6 @@ public class Album implements Serializable {
     }
 
     /**
-     * Adds photo object to list photos
-     * @param file File of photo to add
-     */
-    /*
-    public void addPhoto(File file){
-        Photo new_photo = new Photo(file);
-        photos.add(new_photo);
-        savePhotos();
-    }
-    */
-
-    /**
      * Serializes list of photos
      * @return True if successful, false otherwise
      */

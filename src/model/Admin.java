@@ -151,7 +151,6 @@ public class Admin{
             }
             users.remove(index);
             saveUsers();
-
             return true;
         }catch(Exception e){
             return false;

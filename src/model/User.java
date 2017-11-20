@@ -87,6 +87,27 @@ public class User implements Serializable {
         saveUser();
     }
 
+    public boolean deleteAlbum(int index){
+        try{
+            String rm_album = albums.get(index).getTitle();
+            String rm_owner = getUser();
+            File path = new File("database/user");
+            File[] dir = path.listFiles();
+            if(dir != null){
+                for(File file : dir){
+                    if(file.getPath().contains(rm_owner + "-" + rm_album)){
+                        file.delete();
+                    }
+                }
+            }
+            albums.remove(index);
+            saveUser();
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
+
     /**
      * ALlows ListView to print out usernames
      * @return String
