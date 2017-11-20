@@ -67,7 +67,6 @@ public class User implements Serializable {
                 File path = new File("src/resources/stock");
                 File[] dir = path.listFiles();
                 for(int i = 0; i < dir.length; i++){
-                    System.out.println(dir[i].getAbsolutePath());
                     stock.addPhoto(dir[i].getAbsolutePath());
                 }
             }

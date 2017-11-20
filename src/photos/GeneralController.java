@@ -111,7 +111,7 @@ public class GeneralController implements Initializable {
                 Image image = new Image(temp.toURI().toString(), 120, 120, false, false);
                 ImageView imv = new ImageView(image);
                 Image img = new Image(temp.toURI().toString());
-                Label thumb = new Label(cur_album.photos.get(j).getPath());
+                Label thumb = new Label(temp.getName());
                 thumb.setGraphic(imv);
                 thumb.setContentDisplay(ContentDisplay.TOP);
                 thumb.setTextAlignment(TextAlignment.CENTER);

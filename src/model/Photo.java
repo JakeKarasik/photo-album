@@ -23,8 +23,9 @@ public class Photo implements Serializable {
     }
 
 
-    public String getNamasdasde() {
-        return "";
+    public String getName() {
+        String temp[] = path.split("/");
+        return temp[temp.length-1];
     }
 
     /**
