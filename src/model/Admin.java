@@ -7,8 +7,9 @@ import java.io.*;
 import java.util.ArrayList;
 
 /**
- * This class defines Admin functionality
+ * Static class Admin that provides critical functionality for the entire application
  * @author Benjamin Ker (bk375)
+ * @author Jake Karasik (jak451)
  */
 @SuppressWarnings({"unchecked", "Duplicates"})
 public class Admin{
@@ -16,11 +17,11 @@ public class Admin{
     // List of users managed by admin
     public static ObservableList<User> users = FXCollections.observableArrayList();
 
-    // Data storage location
+    // Location to store list of users
     public static final String storeDir = "database";
     public static String storeFile = "users.ser";
 
-    // ID of active user
+    // ID of active user currently logged in
     public static int user_id  = -1;
 
     /**
@@ -34,13 +35,16 @@ public class Admin{
      */
     public static boolean saveUsers() {
         try{
+            // Write list of Users, converted to ArrayList to allow serialization
             ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(storeDir + File.separator + storeFile));
             oos.writeObject(new ArrayList<>(users));
             oos.close();
 
+            // Write ID of active user
             oos = new ObjectOutputStream(new FileOutputStream(storeDir + File.separator + "user-id.ser"));
             oos.writeObject(user_id);
             oos.close();
+
             return true;
         }catch(Exception e){
             return false;
@@ -53,13 +57,16 @@ public class Admin{
      */
     public static boolean loadUsers(){
         try{
+            // Reads list of Users and converts it back to an Observablelist
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(storeDir + File.separator + storeFile));
             ArrayList<User> read = (ArrayList<User>)(ois.readObject());
             users = FXCollections.observableArrayList(read);
 
+            // Reads active user ID and sets global
             ois = new ObjectInputStream(new FileInputStream(storeDir + File.separator + "user-id.ser"));
             user_id = (int)(ois.readObject());
             ois.close();
+
             return true;
         }catch(Exception e){
             return false;
@@ -72,29 +79,32 @@ public class Admin{
      * @return True if credentials match, false otherwise
      */
     public static boolean authenticated(User input){
-        boolean exists = users.contains(input);
 
+        // Check if any of the input fields are empty
         if(input.getUser().isEmpty() || input.getPass().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "All fields must be filled");
             alert.setHeaderText("Invalid Input");
             alert.showAndWait();
             return false;
         }
-        else if(!exists){
+        // Check if the list of Users contains matches out input username
+        else if(!users.contains(input)){
             Alert alert = new Alert(Alert.AlertType.ERROR, "User does not exist");
             alert.setHeaderText("Invalid Input");
             alert.showAndWait();
             return false;
         }
 
+        // Get User from list and compares passwords
         User cur_user = Admin.users.get(Admin.users.indexOf(input));
-
         if(!cur_user.getPass().equals(input.getPass())){
             Alert alert = new Alert(Alert.AlertType.ERROR, "Password does not match");
             alert.setHeaderText("Invalid Input");
             alert.showAndWait();
             return false;
         }
+
+        // Valid credentials, set active user and return
         user_id = users.indexOf(input);
         return true;
     }
@@ -106,7 +116,11 @@ public class Admin{
      * @param verify Password of new user to match
      */
     public static void createUser(String username, String password, String verify){
+
+        // Create object to be added to the list
         User new_user = new User(username, password);
+
+        // Check for invalid inputs and display error messages as necessary
         if(username.equals("admin")){
             Alert alert = new Alert(Alert.AlertType.ERROR, "Not allowed to create an admin");
             alert.setHeaderText("Invalid Input");
@@ -128,6 +142,8 @@ public class Admin{
             alert.showAndWait();
             return;
         }
+
+        // Add user and save
         users.add(new_user);
         saveUsers();
     }
@@ -136,12 +152,16 @@ public class Admin{
      * Deletes user if selected in ListView
      * @param index Index of User object to be removed
      */
-    // Remove User object from list, given index
     public static boolean deleteUser(int index){
         try{
+            // Get username of User to be removed
             String rm_user = users.get(index).getUser();
+
+            // Get directory and list of files that inside
             File path = new File("database/user");
             File[] dir = path.listFiles();
+
+            // Search directory for files that match username and delete
             if(dir != null){
                 for(File file : dir){
                     if(file.getPath().contains(rm_user)){
@@ -149,6 +169,8 @@ public class Admin{
                     }
                 }
             }
+
+            // Remove user from list and save
             users.remove(index);
             saveUsers();
             return true;

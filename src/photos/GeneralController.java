@@ -106,7 +106,7 @@ public class GeneralController implements Initializable {
             current_user.saveUser();
             return;
         }
-        Album new_album = new Album(title, current_user);
+        Album new_album = new Album(title);
         current_user.addAlbum(new_album);
         Label add_text = new Label(title);
         addToTilePane(add_text,  "resources/folder.png");
@@ -169,8 +169,7 @@ public class GeneralController implements Initializable {
     public void deletePhoto(){
         int index = fx_tilepane.getChildren().indexOf(active_photo);
         fx_tilepane.getChildren().remove(index);
-        album.photos.remove(index-1);
-        album.savePhotos();
+        album.deletePhoto(index-1);
         fx_imageviewer.setImage(null);
         fx_caption.setText("\0");
         fx_date.setText("\0");

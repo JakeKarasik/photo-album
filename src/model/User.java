@@ -62,7 +62,7 @@ public class User implements Serializable {
         }catch(Exception e){
             albums = FXCollections.observableArrayList();
             if(getUser().equals("stock")){
-                Album stock = new Album("stock", this);
+                Album stock = new Album("stock");
                 albums.add(stock);
                 File path = new File("src/resources/stock");
                 File[] dir = path.listFiles();
