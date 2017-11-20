@@ -48,10 +48,10 @@ public class GeneralController implements Initializable {
 
     @FXML
     private Button fx_create, fx_rename, fx_delete_album, fx_search, fx_save_search, fx_back, fx_logout, fx_prev,
-            fx_next, fx_edit, fx_delete_photo, fx_move_copy;
+            fx_next, fx_edit_caption, fx_delete_photo, fx_move_copy, fx_edit_tags;
 
     @FXML
-    private Label fx_name, fx_caption, fx_date;
+    private TextField fx_name, fx_caption, fx_date;
 
     @FXML
     private TextArea fx_tags;
@@ -61,10 +61,23 @@ public class GeneralController implements Initializable {
 
     // ALBUM MANAGEMENT METHODS //
 
+    public void renameAlbum(){
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Rename Album");
+        dialog.setHeaderText("Enter new name of selected album");
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(title -> addNewAlbumData(title));
+    }
     /**
      * Adds a new album given input from TextInputDialog
      */
     private void addNewAlbum(){
+        if(active_album != null){
+            active_album.setStyle("-fx-border-color:transparent");
+            active_album = null;
+            fx_rename.setDisable(true);
+            fx_delete_album.setDisable(true);
+        }
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("New Album");
         dialog.setHeaderText("Enter name of new album");
@@ -77,6 +90,22 @@ public class GeneralController implements Initializable {
      * @param title Title of new album
      */
     private void addNewAlbumData(String title){
+        int size = current_user.albums.size();
+        for(int i = 0; i < size; i++){
+            if(title.equals(current_user.albums.get(i).getTitle()) || title.equals("")){
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Duplicate or empty title was entered");
+                alert.setHeaderText("Invalid Input");
+                alert.showAndWait();
+                return;
+            }
+        }
+        if(active_album != null){
+            Album existing_album = current_user.albums.get(fx_tilepane.getChildren().indexOf(active_album)-1);
+            existing_album.renameAlbum(title);
+            active_album.setText(title);
+            current_user.saveUser();
+            return;
+        }
         Album new_album = new Album(title, current_user);
         current_user.addAlbum(new_album);
         Label add_text = new Label(title);
@@ -112,6 +141,10 @@ public class GeneralController implements Initializable {
                 Image img = new Image(temp.toURI().toString());
                 thumb.setOnMouseClicked(f -> setImageviewer(thumb, img));
             }
+
+            fx_back.setDisable(false);
+            fx_delete_album.setDisable(true);
+            fx_rename.setDisable(true);
         }else{
             // Deselect previously selected node if needed, mark clicked album as selected
             if(active_album != null){
@@ -119,14 +152,18 @@ public class GeneralController implements Initializable {
             }
             active_album = label;
             active_album.setStyle("-fx-border-color: black");
+            fx_rename.setDisable(false);
+            fx_delete_album.setDisable(false);
         }
     }
 
     public void deleteAlbum(){
         int index = fx_tilepane.getChildren().indexOf(active_album);
         fx_tilepane.getChildren().remove(index);
-        current_user.albums.remove(index-1);
+        current_user.deleteAlbum(index-1);
         current_user.saveUser();
+        fx_delete_album.setDisable(true);
+        fx_rename.setDisable(true);
     }
 
     public void deletePhoto(){
@@ -135,7 +172,37 @@ public class GeneralController implements Initializable {
         album.photos.remove(index-1);
         album.savePhotos();
         fx_imageviewer.setImage(null);
+        fx_caption.setText("\0");
+        fx_date.setText("\0");
+        fx_name.setText("\0");
+        fx_tags.setText("\0");
         active_photo = null;
+        fx_edit_caption.setDisable(true);
+        fx_delete_photo.setDisable(true);
+        fx_prev.setDisable(true);
+        fx_next.setDisable(true);
+    }
+
+
+    public void nextPhoto(){
+        int index = fx_tilepane.getChildren().indexOf(active_photo);
+        int max = fx_tilepane.getChildren().size();
+        if(index == max-1){ index = 1; } else { index += 1; }
+
+        File temp = new File(album.photos.get(index-1).getPath());
+        Image img = new Image(temp.toURI().toString());
+        Label next_image = (Label)(fx_tilepane.getChildren().get(index));
+        setImageviewer(next_image, img);
+    }
+    public void prevPhoto(){
+        int index = fx_tilepane.getChildren().indexOf(active_photo);
+        int max = fx_tilepane.getChildren().size();
+        if(index == 1){ index = max-1; } else { index -= 1; }
+
+        File temp = new File(album.photos.get(index-1).getPath());
+        Image img = new Image(temp.toURI().toString());
+        Label next_image = (Label)(fx_tilepane.getChildren().get(index));
+        setImageviewer(next_image, img);
     }
 
     // PHOTO MANAGEMENT METHODS //
@@ -145,8 +212,16 @@ public class GeneralController implements Initializable {
      * @param img File to set ImageViewer to
      */
     private void setImageviewer(Label thumb, Image img){
+        Photo selected = album.photos.get(fx_tilepane.getChildren().indexOf(thumb)-1);
+        fx_caption.setText(selected.getCaption());
+        fx_name.setText(selected.getName());
+        fx_date.setText(selected.getDate());
         fx_imageviewer.setImage(img);
         active_photo = thumb;
+        fx_delete_photo.setDisable(false);
+        fx_edit_caption.setDisable(false);
+        fx_prev.setDisable(false);
+        fx_next.setDisable(false);
     }
 
     /**
@@ -165,6 +240,20 @@ public class GeneralController implements Initializable {
             Image img = new Image(file.toURI().toString());
             add_text.setOnMouseClicked(f -> setImageviewer(add_text, img));
         }
+    }
+
+    public void editCaption(){
+        fx_edit_caption.setDisable(false);
+        fx_caption.setDisable(false);
+        if(fx_edit_caption.getText().equals("save edit")){
+            int index = fx_tilepane.getChildren().indexOf(active_photo);
+            album.photos.get(index-1).setCaption(fx_caption.getText());
+            album.savePhotos();
+            fx_edit_caption.setText("edit caption");
+            fx_caption.setDisable(true);
+            return;
+        }
+        fx_edit_caption.setText("save edit");
     }
 
     // GENERAL METHODS //
@@ -189,6 +278,18 @@ public class GeneralController implements Initializable {
         label.setPrefWidth(120.0);
         label.setWrapText(true);
         fx_tilepane.getChildren().add(label);
+    }
+
+    public void back(){
+        // Get stage and switch
+        Stage stage = (Stage)fx_anchor.getScene().getWindow();
+        Photos.switchStage(stage, "General.fxml", "Photo Library // Current User: " +
+                Admin.users.get(Admin.user_id).getUser());
+    }
+    public void logout(){
+        Admin.user_id = -1;
+        Stage stage = (Stage)fx_anchor.getScene().getWindow();
+        Photos.switchStage(stage, "Login.fxml", "Enter Authentication");
     }
 
     @Override

@@ -21,6 +21,13 @@ public class Photo implements Serializable {
     public String getPath(){
         return path;
     }
+    public String getName() {
+        File temp = new File(path);
+        return temp.getName();
+    }
+    public String getCaption(){ return caption; }
+    public String getDate(){return last_modified.getTime().toString(); }
+    public void setCaption(String new_caption) { caption = new_caption; }
 
     /**
      * Creates Photo object from given file

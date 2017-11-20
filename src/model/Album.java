@@ -48,7 +48,7 @@ public class Album implements Serializable {
      * Sets title of album selected
      * @param new_title New title of album
      */
-    public void setTitle(String new_title){ this.album_title = new_title; }
+    public void setTitle(String new_title){ album_title = new_title; }
 
     /**
      * Adds photo object to list photos
@@ -58,6 +58,18 @@ public class Album implements Serializable {
         Photo new_photo = new Photo(photo_file);
         photos.add(new_photo);
         savePhotos();
+    }
+
+    public boolean renameAlbum(String new_title){
+        try{
+            String username = Admin.users.get(Admin.user_id).getUser();
+            File of = new File( storeDir + File.separator + username + "-" + getTitle() + storeFile);
+            File nf = new File(storeDir + File.separator + username + "-" + new_title + storeFile);
+            setTitle(new_title);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
     }
 
     /**
