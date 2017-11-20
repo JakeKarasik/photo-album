@@ -63,11 +63,13 @@ public class Album implements Serializable {
      * Adds photo object to list photos
      * @param file File of photo to add
      */
+    /*
     public void addPhoto(File file){
         Photo new_photo = new Photo(file);
         photos.add(new_photo);
         savePhotos();
     }
+    */
 
     /**
      * Serializes list of photos
@@ -76,8 +78,8 @@ public class Album implements Serializable {
     public boolean savePhotos() {
         try{
             String username = Admin.users.get(Admin.user_id).getUser();
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(storeDir + File.separator + username + getTitle() + storeFile));
-            ArrayList<Photo> copy = new ArrayList<Photo>(photos);
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(storeDir + File.separator + username + "-" + getTitle() + storeFile));
+            ArrayList<Photo> copy = new ArrayList<>(photos);
             oos.writeObject(copy);
             oos.close();
             return true;
@@ -93,13 +95,11 @@ public class Album implements Serializable {
     public boolean loadPhotos(){
         try{
             String username = Admin.users.get(Admin.user_id).getUser();
-            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(storeDir + File.separator + username + getTitle() +  storeFile));
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(storeDir + File.separator + username + "-" + getTitle() +  storeFile));
             ArrayList<Photo> read = (ArrayList<Photo>)(ois.readObject());
             photos = FXCollections.observableArrayList(read);
             return true;
         }catch(Exception e){
-            e.printStackTrace();
-            System.out.println("HI");
             return false;
         }
     }

@@ -21,12 +21,19 @@ public class Photo implements Serializable {
     public String getPath(){
         return path;
     }
+
+
+    public String getNamasdasde() {
+        return "";
+    }
+
     /**
      * Creates Photo object from given file
      * @param file File passed in from file chooser
      */
     public Photo(File file){
-        this.path = file.getAbsolutePath();
+        this.path = file.getPath();
+        //this.path = file.getAbsolutePath();
         this.caption = "\0";
         this.photo_tags = new ArrayList<>();
         this.last_modified = Calendar.getInstance();

@@ -60,11 +60,16 @@ public class User implements Serializable {
             albums = FXCollections.observableArrayList(read);
             return true;
         }catch(Exception e){
-            Album stock = new Album("stock", this);
             albums = FXCollections.observableArrayList();
-            albums.add(stock);
-            for(int i = 1; i < 7; i++){
-                stock.addPhoto("resources/stock/stock-" + i + ".jpg");
+            if(getUser().equals("stock")){
+                Album stock = new Album("stock", this);
+                albums.add(stock);
+                File path = new File("src/resources/stock");
+                File[] dir = path.listFiles();
+                for(int i = 0; i < dir.length; i++){
+                    System.out.println(dir[i].getAbsolutePath());
+                    stock.addPhoto(dir[i].getAbsolutePath());
+                }
             }
             saveUser();
             return false;

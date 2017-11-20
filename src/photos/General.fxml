@@ -9,14 +9,18 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.TilePane?>
 
-<AnchorPane fx:id="fx_anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="795.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="photos.GeneralController">
+<AnchorPane fx:id="fx_anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="795.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="photos.GeneralController">
     <children>
 
         <!-- Note: Don't need add photo/album; create button inside TilePane -->
 
         <!-- ScrollPane for albums/image thumbnails -->
-        <ScrollPane fx:id="fx_scrollpane" layoutX="14.0" layoutY="14.0" prefHeight="350.0" prefWidth="290.0" />
+        <ScrollPane fx:id="fx_scrollpane" layoutX="14.0" layoutY="14.0" prefHeight="350.0" prefWidth="290.0" pannable="true">
+         <content>
+            <TilePane fx:id="fx_tilepane" prefHeight="350.0" prefWidth="275.0" hgap ="10" vgap="10" prefColumns="2" />
+         </content></ScrollPane>
 
         <!-- Logout & go back-->
         <Button fx:id="fx_logout" layoutX="14.0" layoutY="428.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="61.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="logout" />

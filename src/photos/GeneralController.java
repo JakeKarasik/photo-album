@@ -14,8 +14,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
 import javafx.scene.text.TextAlignment;
+
+import javax.imageio.ImageIO;
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -29,6 +33,10 @@ public class GeneralController implements Initializable {
 
     // Current user
     User current_user;
+
+    // Previously selected album/photo
+    int cur_index = -1;
+
 
 
     @FXML
@@ -49,98 +57,90 @@ public class GeneralController implements Initializable {
     @FXML
     private TextArea fx_tags;
 
+    @FXML
+    private TilePane fx_tilepane;
 
-    private void setUser() { current_user = Admin.users.get(Admin.user_id); }
+    // ALBUM MANAGEMENT METHODS //
 
     /**
-     *
-     * @param location
-     * @param resources
+     * Adds a new album given input from TextInputDialog
      */
-    @Override
-    public void initialize(URL location, ResourceBundle resources){
+    private void addNewAlbum(){
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("New Album");
+        dialog.setHeaderText("Enter name of new album");
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(title -> addNewAlbumData(title));
+    }
 
+    /**
+     * Helper method. Saves album data and adds it to the TilePane
+     * @param title Title of new album
+     */
+    private void addNewAlbumData(String title){
+        Album new_album = new Album(title, current_user);
+        current_user.albums.add(new_album);
+        current_user.saveUser();
+        Label add_text = new Label(title);
+        addToTilePane(add_text,  "resources/folder.png", Integer.toString(current_user.albums.size()-1));
+        add_text.setOnMouseClicked(e -> mouseHandler(e, add_text));
+    }
 
-        TilePane tiles = new TilePane(10, 10); tiles.setPrefColumns(2);
-        tiles.setPadding(new Insets(10,10,10,10));
-        setUser();
-        current_user.loadUser();
-        int size = current_user.albums.size();
-        for(int i = 0; i < size; i++){
-            Image image = new Image("resources/folder.png", 120, 120, false, false);
-            ImageView imv = new ImageView(image);
-            Label label2 = new Label(current_user.albums.get(i).getTitle());
-            label2.setGraphic(imv);
-            label2.setContentDisplay(ContentDisplay.TOP);
-            label2.setTextAlignment(TextAlignment.CENTER);
-            label2.setPrefWidth(120.0);
-            label2.setWrapText(true); tiles.getChildren().addAll(label2);
-            label2.setId(Integer.toString(i));
-            label2.setOnMouseClicked(new EventHandler<MouseEvent>(){
-                @Override
-                public void handle(MouseEvent arg0) {
-                    tiles.getChildren().clear();
-                    Album cur_album = current_user.albums.get(Integer.parseInt(label2.getId()));
+    /**
+     * Handles clicking an album. Single click selects an album; double click opens it.
+     * @param e MouseEvent to check for how many clicks
+     * @param label Label that we are working on
+     */
+    private void mouseHandler(MouseEvent e, Label label){
+        if(e.getClickCount() == 2){
+            // Clear TilePane and begin loading photo thumbnails
+            fx_tilepane.getChildren().clear();
+            cur_index = -1;
+            Album cur_album = current_user.albums.get(Integer.parseInt(label.getId()));
+            cur_album.loadPhotos();
 
-                    cur_album.loadPhotos();
-                    int size2 = cur_album.photos.size();
-                    for(int j = 0; j < size2; j++){
-                        Image image = new Image(cur_album.photos.get(j).getPath(), 120, 120, false, false);
-                        ImageView imv = new ImageView(image);
-                        Image img = new Image(cur_album.photos.get(j).getPath());
-                        Label label2 = new Label(cur_album.photos.get(j).getPath());
-                        label2.setGraphic(imv);
-                        label2.setContentDisplay(ContentDisplay.TOP);
-                        label2.setTextAlignment(TextAlignment.CENTER);
-                        label2.setPrefWidth(120.0);
-                        label2.setWrapText(true); tiles.getChildren().addAll(label2);
-                        label2.setOnMouseClicked(new EventHandler<MouseEvent>(){
-                            @Override
-                            public void handle(MouseEvent arg0) {
-                                fx_imageviewer.setImage(img);
-                            }
-                        });
-                    }
-                    fx_scrollpane.setContent(tiles);
-                    fx_scrollpane.setPannable(true);
+            // Create "Add New" label and add it to the TilePane
+            Label add_text = new Label("Add New");
+            addToTilePane(add_text, "resources/add.png", "0");
+            add_text.setOnMouseClicked(f -> addNewPhoto());
 
-
-                }
-            });
+            int size = cur_album.photos.size();
+            for(int j = 0; j < size; j++){
+                System.out.println(cur_album.photos.get(j).getPath());
+                File temp = new File(cur_album.photos.get(j).getPath());
+                Image image = new Image(temp.toURI().toString(), 120, 120, false, false);
+                ImageView imv = new ImageView(image);
+                Image img = new Image(temp.toURI().toString());
+                Label thumb = new Label(cur_album.photos.get(j).getPath());
+                thumb.setGraphic(imv);
+                thumb.setContentDisplay(ContentDisplay.TOP);
+                thumb.setTextAlignment(TextAlignment.CENTER);
+                thumb.setPrefWidth(120.0);
+                thumb.setWrapText(true);
+                fx_tilepane.getChildren().addAll(thumb);
+                thumb.setOnMouseClicked(f -> setImageviewer(img));
+            }
+        }else{
+            // Deselect previously selected node if needed, mark clicked album as selected
+            if(cur_index >= 0){
+                Label prev = (Label)(fx_tilepane.getChildren().get(cur_index+1));
+                prev.setStyle("-fx-border-color:transparent");
+            }
+            label.setStyle("-fx-border-color: black");
+            cur_index = Integer.parseInt(label.getId());
         }
-        fx_scrollpane.setContent(tiles);
-        fx_scrollpane.setPannable(true);
+    }
+
+    // PHOTO MANAGEMENT METHODS //
+
+    /**
+     * Helper method to mouseHandler
+     * @param img Image to set ImageViewer to
+     */
+    private void setImageviewer(Image img){ fx_imageviewer.setImage(img); }
 
 
-
-
-
-        /*
-        for(int i = 1; i < 7; i++){
-            stock_photos.addPhoto("resources/stock/stock-" + i + ".jpg");
-        }
-        */
-        /* Testing - do not remove
-        for(int i = 1; i < 7; i++){
-            Image image = new Image("resources/stock/stock-" + i + ".jpg", 120, 120, false, false);
-            ImageView imv = new ImageView(image);
-            Image img = new Image("resources/stock/stock-" + i + ".jpg");
-            Label label2 = new Label("stock-" + i + ".jpg");
-            label2.setGraphic(imv);
-            label2.setContentDisplay(ContentDisplay.TOP);
-            label2.setTextAlignment(TextAlignment.CENTER);
-            label2.setPrefWidth(120.0);
-            label2.setWrapText(true); tiles.getChildren().addAll(label2);
-            label2.setOnMouseClicked(new EventHandler<MouseEvent>(){
-                @Override
-                public void handle(MouseEvent arg0) {
-                    fx_imageviewer.setImage(img);
-                }
-            });
-        }
-        fx_scrollpane.setContent(tiles);
-        fx_scrollpane.setPannable(true);
-        */
+    private void addNewPhoto(){
 
     }
 
@@ -155,7 +155,67 @@ public class GeneralController implements Initializable {
         Image img = new Image("file:"+path);
         fx_imageviewer.setImage(img);
         */
-        stock_photos.addPhoto(file);
+        //stock_photos.addPhoto(file);
 
+    }
+
+    // GENERAL METHODS //
+
+    /**
+     * Gets active user to work on
+     */
+    private void getUser() { current_user = Admin.users.get(Admin.user_id); }
+
+
+    /**
+     * Adds an album/image thumbnail to the TilePane
+     * @param label Label to add
+     * @param path Path of image to display
+     * @param id Sets ID of label so it is accessible later
+     */
+    private void addToTilePane(Label label, String path, String id){
+        Image img = new Image(path, 120, 120, false, false);
+        ImageView add_imv = new ImageView(img);
+        label.setGraphic(add_imv);
+        label.setContentDisplay(ContentDisplay.TOP);
+        label.setTextAlignment(TextAlignment.CENTER);
+        label.setPrefWidth(120.0);
+        label.setWrapText(true);
+        label.setId(id);
+        fx_tilepane.getChildren().add(label);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources){
+
+        // Set up TilePane, padding and two columns
+        //TilePane tiles = new TilePane(10, 10); tiles.setPrefColumns(2);
+        fx_tilepane.setPadding(new Insets(10,10,10,10));
+
+        // Grab the active User and load its data
+        getUser();
+        current_user.loadUser();
+
+        // Create "Add New" label and add it to the TilePane
+        Label add_text = new Label("Add New");
+        addToTilePane(add_text, "resources/add.png", "0");
+        add_text.setOnMouseClicked(e -> addNewAlbum());
+
+        // Display the albums of User
+        int size = current_user.albums.size();
+        for(int i = 0; i < size; i++){
+
+            // Set up album icon
+            Image image = new Image("resources/folder.png", 120, 120, false, false);
+            ImageView imv = new ImageView(image);
+
+            // Display albums as labels with icon and text
+            Label icon = new Label(current_user.albums.get(i).getTitle());
+            addToTilePane(icon, "resources/folder.png", Integer.toString(i));
+
+            // Set behavior when clicked
+            icon.setOnMouseClicked(e -> mouseHandler(e, icon));
+
+        }
     }
 }
