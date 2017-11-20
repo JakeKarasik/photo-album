@@ -4,7 +4,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.*;
 import model.*;
 
-import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.fxml.FXML;
@@ -15,9 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
 import javafx.scene.text.TextAlignment;
 
-import javax.imageio.ImageIO;
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -28,19 +25,15 @@ import java.util.ResourceBundle;
  */
 public class GeneralController implements Initializable {
 
-    // Stock photos
-    Album stock_photos;
-
     // Current user
     User current_user;
 
     // Previously selected album/photo
     int cur_index = -1;
 
-
-
     @FXML
     private AnchorPane fx_anchor;
+
     @FXML
     private ScrollPane fx_scrollpane;
 
@@ -79,8 +72,7 @@ public class GeneralController implements Initializable {
      */
     private void addNewAlbumData(String title){
         Album new_album = new Album(title, current_user);
-        current_user.albums.add(new_album);
-        current_user.saveUser();
+        current_user.addAlbum(new_album);
         Label add_text = new Label(title);
         addToTilePane(add_text,  "resources/folder.png", Integer.toString(current_user.albums.size()-1));
         add_text.setOnMouseClicked(e -> mouseHandler(e, add_text));
@@ -105,21 +97,16 @@ public class GeneralController implements Initializable {
             add_text.setOnMouseClicked(f -> addNewPhoto());
 
             int size = cur_album.photos.size();
+
             for(int j = 0; j < size; j++){
-                System.out.println(cur_album.photos.get(j).getPath());
                 File temp = new File(cur_album.photos.get(j).getPath());
-                Image image = new Image(temp.toURI().toString(), 120, 120, false, false);
-                ImageView imv = new ImageView(image);
-                Image img = new Image(temp.toURI().toString());
+
                 Label thumb = new Label(temp.getName());
-                thumb.setGraphic(imv);
-                thumb.setContentDisplay(ContentDisplay.TOP);
-                thumb.setTextAlignment(TextAlignment.CENTER);
-                thumb.setPrefWidth(120.0);
-                thumb.setWrapText(true);
-                fx_tilepane.getChildren().addAll(thumb);
+                addToTilePane(thumb, temp.toURI().toString(), Integer.toString(-1));
+                Image img = new Image(temp.toURI().toString());
                 thumb.setOnMouseClicked(f -> setImageviewer(img));
             }
+            cur_index = Integer.parseInt(label.getId());
         }else{
             // Deselect previously selected node if needed, mark clicked album as selected
             if(cur_index >= 0){
@@ -140,23 +127,24 @@ public class GeneralController implements Initializable {
     private void setImageviewer(Image img){ fx_imageviewer.setImage(img); }
 
 
+    /**
+     * Adds a new album given input from TextInputDialog
+     */
     private void addNewPhoto(){
-
-    }
-
-    public void getPath(){
         Stage fc_stage = (Stage)fx_anchor.getScene().getWindow();
         FileChooser fc = new FileChooser();
         fc.setTitle("Choose Image");
-        File file = fc.showOpenDialog(fc_stage);
-        /*
-        String path = fc.showOpenDialog(fc_stage).getAbsolutePath();
-        System.out.println(path);
-        Image img = new Image("file:"+path);
-        fx_imageviewer.setImage(img);
-        */
-        //stock_photos.addPhoto(file);
 
+        File file = fc.showOpenDialog(fc_stage);
+        if(file != null){
+
+            Album current_album = current_user.albums.get(cur_index);
+            current_album.addPhoto(file);
+            Label add_text = new Label(file.getName());
+            addToTilePane(add_text, file.toURI().toString(), Integer.toString(current_album.photos.size()-1));
+            Image img = new Image(file.toURI().toString());
+            add_text.setOnMouseClicked(f -> setImageviewer(img));
+        }
     }
 
     // GENERAL METHODS //
@@ -204,10 +192,6 @@ public class GeneralController implements Initializable {
         // Display the albums of User
         int size = current_user.albums.size();
         for(int i = 0; i < size; i++){
-
-            // Set up album icon
-            Image image = new Image("resources/folder.png", 120, 120, false, false);
-            ImageView imv = new ImageView(image);
 
             // Display albums as labels with icon and text
             Label icon = new Label(current_user.albums.get(i).getTitle());

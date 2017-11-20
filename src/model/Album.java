@@ -19,7 +19,7 @@ public class Album implements Serializable {
     public final String storeFile = ".ser";
 
     // List of photos contained by album
-    public transient ObservableList<Photo> photos = FXCollections.observableArrayList();
+    public transient ObservableList<Photo> photos;
 
     /**
      * Creates our album and assigns it a title and owner
@@ -28,6 +28,7 @@ public class Album implements Serializable {
      */
     public Album(String title, User user){
         this.album_title = title;
+        this.photos = FXCollections.observableArrayList();
         owner = user;
     }
 
@@ -51,10 +52,10 @@ public class Album implements Serializable {
 
     /**
      * Adds photo object to list photos
-     * @param path Path of our photo to add
+     * @param photo_file File of our photo to add
      */
-    public void addPhoto(String path){
-        Photo new_photo = new Photo(path);
+    public void addPhoto(File photo_file){
+        Photo new_photo = new Photo(photo_file);
         photos.add(new_photo);
         savePhotos();
     }

@@ -66,8 +66,10 @@ public class User implements Serializable {
                 albums.add(stock);
                 File path = new File("src/resources/stock");
                 File[] dir = path.listFiles();
-                for(int i = 0; i < dir.length; i++){
-                    stock.addPhoto(dir[i].getAbsolutePath());
+                if(dir != null){
+                    for(File file : dir){
+                        stock.addPhoto(file);
+                    }
                 }
             }
             saveUser();
@@ -81,6 +83,7 @@ public class User implements Serializable {
      */
     public void addAlbum(Album new_album){
         albums.add(new_album);
+        new_album.savePhotos();
         saveUser();
     }
 

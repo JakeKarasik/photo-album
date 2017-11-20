@@ -139,8 +139,19 @@ public class Admin{
     // Remove User object from list, given index
     public static boolean deleteUser(int index){
         try{
+            String rm_user = users.get(index).getUser();
+            File path = new File("database/user");
+            File[] dir = path.listFiles();
+            if(dir != null){
+                for(File file : dir){
+                    if(file.getPath().contains(rm_user)){
+                        file.delete();
+                    }
+                }
+            }
             users.remove(index);
             saveUsers();
+
             return true;
         }catch(Exception e){
             return false;

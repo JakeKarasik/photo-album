@@ -33,8 +33,7 @@ public class Photo implements Serializable {
      * @param file File passed in from file chooser
      */
     public Photo(File file){
-        this.path = file.getPath();
-        //this.path = file.getAbsolutePath();
+        this.path = file.getAbsolutePath();
         this.caption = "\0";
         this.photo_tags = new ArrayList<>();
         this.last_modified = Calendar.getInstance();
@@ -46,6 +45,7 @@ public class Photo implements Serializable {
      * Constructor for stock album and debugging
      * @param path Relative path from src
      */
+    /*
     public Photo(String path){
         this.path = path;
         this.caption = "\0";
@@ -54,5 +54,5 @@ public class Photo implements Serializable {
         File file = new File(path);
         this.last_modified.setTimeInMillis(file.lastModified());
         this.last_modified.set(Calendar.MILLISECOND, 0);
-    }
+    }*/
 }
