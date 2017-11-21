@@ -49,6 +49,13 @@ public class Photo implements Serializable {
      * @return String date of last modification
      */
     public String getDate(){return last_modified.getTime().toString(); }
+    
+    
+    /**
+     * Gets date of our photo as calendar object
+     * @return Date last modified
+     */
+    public Calendar getLastModified() {return last_modified; }
 
     /**
      * Sets the caption of our photo

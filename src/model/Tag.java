@@ -31,13 +31,9 @@ public class Tag implements Serializable {
 		this.value = value;
 	}
 	
-	
 	@Override
 	public boolean equals(Object t) {
-		if (!(t instanceof Tag)) {
-			return false;
-		}
-		return this.name.equals(((Tag)t).name) && this.value.equals(((Tag)t).value);
+		return t != null && (t instanceof Tag) && this.name.equalsIgnoreCase(((Tag)t).name) && this.value.equalsIgnoreCase(((Tag)t).value);
 	}
 	
 	@Override

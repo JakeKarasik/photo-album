@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
 public class GeneralController implements Initializable {
 
     // Current user
-    User current_user;
+    static User current_user;
 
     // Album being accessed - viewing Photos
     static Album album = null;
@@ -332,9 +332,12 @@ public class GeneralController implements Initializable {
     	int index = fx_tilepane.getChildren().indexOf(active_photo) - 1;
     	photo = album.photos.get(index);
     	Stage edit_tags_stage = Photos.newStage((Stage)fx_anchor.getScene().getWindow(), "TagEditor.fxml", "Edit Tags");
-    	edit_tags_stage.setOnHidden(event -> {
-    		fx_tags.setText(photo.getTags().toString());
-    	});
+    	//Update tags when editor window closes
+    	edit_tags_stage.setOnHidden(e -> fx_tags.setText(photo.getTags().toString()));
+    }
+    
+    public void search() {
+    	Photos.newStage((Stage)fx_anchor.getScene().getWindow(), "Search.fxml", "Search");
     }
 
     // GENERAL METHODS //

@@ -24,7 +24,7 @@
         <Button fx:id="add_tag" layoutX="314.0" layoutY="212.0" mnemonicParsing="false" onMouseClicked="#addTag" prefHeight="39.0" prefWidth="258.0" style="-fx-font-family:Roboto; -fx-font-size:14.0" text="add" />
 
         <!-- Close editor -->
-        <Button fx:id="close_tag_editor" onMouseClicked="#returnToPhoto" layoutX="314.0" layoutY="276.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="258.0" style="-fx-font-family:Roboto; -fx-font-size:14.0" text="return" />
+        <Button fx:id="close" onMouseClicked="#close" layoutX="314.0" layoutY="276.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="258.0" style="-fx-font-family:Roboto; -fx-font-size:14.0" text="return" />
 
         <!-- Misc. -->
         <Line endX="100.0" layoutX="443.0" layoutY="266.0" startX="-100.0" />

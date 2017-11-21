@@ -22,7 +22,7 @@ public class TagEditorController {
 	private ListView<Tag> current_tags;
 	
 	@FXML
-	private Button close_tag_editor;
+	private Button close;
 	
 	@FXML
     public void initialize() {
@@ -70,8 +70,8 @@ public class TagEditorController {
 		album.savePhotos();
 	}
 	
-	public void returnToPhoto() {
-		Stage stage = (Stage)close_tag_editor.getScene().getWindow();
+	public void close() {
+		Stage stage = (Stage)close.getScene().getWindow();
 		stage.close();
 	}
 }
