@@ -27,13 +27,15 @@ public class GeneralController implements Initializable {
     User current_user;
 
     // Album being accessed - viewing Photos
-    Album album = null;
+    static Album album = null;
 
     // Label of selected album - viewing Albums
     Label active_album = null;
 
     // Label of selected photo - viewing Photos
     Label active_photo = null;
+    
+    static Photo photo;
 
     @FXML
     private AnchorPane fx_anchor;
@@ -195,11 +197,13 @@ public class GeneralController implements Initializable {
         // Get Photo associated with with selected label in TilePane
         Photo selected = album.photos.get(fx_tilepane.getChildren().indexOf(thumb)-1);
 
-        // Set photo metadata fields --> #TODO SET TAGS
+        // Set photo metadata fields -->
         fx_caption.setText(selected.getCaption());
         fx_name.setText(selected.getName());
         fx_date.setText(selected.getDate());
         fx_imageviewer.setImage(img);
+        fx_tags.setText(selected.getTags().toString());
+        fx_tags.setWrapText(true);
 
         // Set label as active photo
         active_photo = thumb;
@@ -207,6 +211,7 @@ public class GeneralController implements Initializable {
         // Set buttons
         fx_delete_photo.setDisable(false);
         fx_edit_caption.setDisable(false);
+        fx_edit_tags.setDisable(false);
         fx_prev.setDisable(false);
         fx_next.setDisable(false);
     }
@@ -310,13 +315,26 @@ public class GeneralController implements Initializable {
             album.photos.get(index-1).setCaption(fx_caption.getText());
             album.savePhotos();
 
-            // Reset componenets
+            // Reset components
             fx_edit_caption.setText("edit caption");
             fx_caption.setDisable(true);
             return;
         }
         // Otherwise, change component to save edit and wait for it to be pressed again
         fx_edit_caption.setText("save edit");
+    }
+    
+    /**
+     * Edit tags of selected photo
+     */
+    public void editTags() {
+    	//Get index of current photo
+    	int index = fx_tilepane.getChildren().indexOf(active_photo) - 1;
+    	photo = album.photos.get(index);
+    	Stage edit_tags_stage = Photos.newStage((Stage)fx_anchor.getScene().getWindow(), "TagEditor.fxml", "Edit Tags");
+    	edit_tags_stage.setOnHidden(event -> {
+    		fx_tags.setText(photo.getTags().toString());
+    	});
     }
 
     // GENERAL METHODS //
@@ -371,7 +389,6 @@ public class GeneralController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources){
-
         // Set up TilePane padding
         fx_tilepane.setPadding(new Insets(10,10,10,10));
 

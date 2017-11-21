@@ -13,7 +13,12 @@ import java.util.ArrayList;
 @SuppressWarnings({"unchecked", "Duplicates"})
 public class Album implements Serializable {
 
-    // Metadata
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	// Metadata
     private String album_title;
     public final String storeDir = "database/user";
     public final String storeFile = ".ser";

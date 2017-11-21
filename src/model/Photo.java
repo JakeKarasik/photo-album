@@ -12,10 +12,12 @@ import java.util.Calendar;
  */
 public class Photo implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
     // Metadata
     private String path;
     private String caption;
-    private ArrayList<Tags> photo_tags;
+    private ArrayList<Tag> photo_tags;
     private Calendar last_modified;
 
 
@@ -61,9 +63,37 @@ public class Photo implements Serializable {
     public Photo(File file){
         this.path = file.getAbsolutePath();
         this.caption = "\0";
-        this.photo_tags = new ArrayList<>();
+        this.photo_tags = new ArrayList<Tag>();
         this.last_modified = Calendar.getInstance();
         this.last_modified.setTimeInMillis(file.lastModified());
         this.last_modified.set(Calendar.MILLISECOND, 0);
+    }
+    
+    /**
+     * Adds given tag to photo's tags if doesn't already exist.
+     * @param t Tag to add
+     */
+    public void addTag(Tag t) {
+    	if (!photo_tags.contains(t)) {
+    		photo_tags.add(t);
+    	}
+    }
+    
+    /**
+     * Deletes given tag from photo's tags
+     * @param t Tag to delete
+     */
+    public void removeTag(Tag t) {
+    	if (photo_tags.contains(t)) {
+    		photo_tags.remove(t);
+    	}
+    }
+    
+    /**
+     * Gets all tags for photo
+     * @return t All tags for photo
+     */
+    public ArrayList<Tag> getTags() {
+    	return photo_tags;
     }
 }

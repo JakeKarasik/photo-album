@@ -16,6 +16,9 @@ import java.io.Serializable;
  */
 @SuppressWarnings("WeakerAccess")
 public class Photos extends Application implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	
     /**
      * Calls switchStage to start the program
      * @param primaryStage Stage argument to call switchStage on
@@ -58,11 +61,12 @@ public class Photos extends Application implements Serializable {
      * @param next_fxml Name of FXML to load
      * @param title Title of next scene
      */
-    public static void newStage(Stage old_stage, String next_fxml, String title){
+    public static Stage newStage(Stage old_stage, String next_fxml, String title){
 	    Stage new_stage = new Stage();
         new_stage.initModality(Modality.WINDOW_MODAL);
         new_stage.initOwner(old_stage);
         switchStage(new_stage, next_fxml, title);
+        return new_stage;
     }
 	
 	public static void main(String[] args) {
