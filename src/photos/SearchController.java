@@ -32,7 +32,7 @@ public class SearchController {
 		boolean search_by_tags = true, search_by_date = true;
 		
 		//Split tags by commas
-		String[] tags = search_tags.getText().split(",");
+		String[] tags = search_tags.getText().trim().split(",");
 		
 		//Create calendar instances for comparing date range
 		String pattern = "yyyy-MM-dd";
@@ -79,7 +79,7 @@ public class SearchController {
 					ArrayList<Tag> p_tags = p.getTags();
 					for (String t : tags) {
 						String[] tag = t.split("=");
-						if (p_tags.contains(new Tag(tag[0],tag[1]))) {
+						if (p_tags.contains(new Tag(tag[0].trim(),tag[1].trim()))) {
 							//If search by date and tags, need to check if within range
 							if (search_by_date && current_last_modified.compareTo(ctd) <= 0 && current_last_modified.compareTo(cfd) >= 0) {
 								temp.photos.add(p);
