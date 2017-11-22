@@ -20,6 +20,7 @@ import java.util.ResourceBundle;
 /**
  * This class controls the photo library
  * @author Benjamin Ker (bk375)
+ * @author Jake Karasik (jak451)
  */
 public class GeneralController implements Initializable {
 
@@ -154,7 +155,7 @@ public class GeneralController implements Initializable {
             fx_tilepane.getChildren().clear();
 
             // Create "Add New" label and add it to the TilePane
-            Label add_text = new Label("Add New");
+            Label add_text = new Label("Add New Photo");
             addToTilePane(add_text, "resources/add.png");
             add_text.setOnMouseClicked(f -> addNewPhoto());
 
@@ -184,7 +185,65 @@ public class GeneralController implements Initializable {
             fx_rename.setDisable(false);
             fx_delete_album.setDisable(false);
         }
+    }  
+    
+    /**
+     * Loads search results into main display
+     */
+    public void showSearchResults() {
+    	// Clear TilePane and begin loading photo thumbnails
+        fx_tilepane.getChildren().clear();
+
+        // Create "Add New" label and add it to the TilePane
+        Label add_text = new Label("Search Results");
+        addToTilePane(add_text, "resources/search_results.png");
+        //add_text.setOnMouseClicked(f -> addNewPhoto());
+
+        // For each photo in album, add it to the TilePane and set action on click
+        int size = album.photos.size();
+        for(int j = 0; j < size; j++){
+            File temp = new File(album.photos.get(j).getPath());
+            Label thumb = new Label(temp.getName());
+            addToTilePane(thumb, temp.toURI().toString());
+            Image img = new Image(temp.toURI().toString());
+            thumb.setOnMouseClicked(f -> setImageviewer(thumb, img));
+        }
+
+        // Set buttons
+        fx_back.setDisable(false);
+        fx_delete_album.setDisable(true);
+        fx_rename.setDisable(true);
+        fx_save_search.setDisable(false);
     }
+    
+    /**
+     * Called when save search button clicked. Saves result as new album
+     */
+    public void saveSearch() {
+    	TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Save Search Results As Album");
+        dialog.setHeaderText("What would you like to name the album?");
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            String album_name = result.get();
+            // Get size of the list of albums owned by current user
+            int size = current_user.albums.size();
+
+            // Check that the input does not conflict with our albums and is not null
+            for(int i = 0; i < size; i++){
+                if(album_name.equals(current_user.albums.get(i).getTitle()) || album_name.equals("")){
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Duplicate or empty title was entered");
+                    alert.setHeaderText("Invalid Input");
+                    alert.showAndWait();
+                    return;
+                }
+            }
+            album.setTitle(album_name);
+            current_user.addAlbum(album);
+            fx_save_search.setDisable(true);
+        }
+    }
+    
 
     // PHOTO MANAGEMENT METHODS //
 
@@ -341,7 +400,12 @@ public class GeneralController implements Initializable {
      * Launch window to search for images
      */
     public void search() {
-    	Photos.newStage((Stage)fx_anchor.getScene().getWindow(), "Search.fxml", "Search");
+    	Stage search_stage = Photos.newStage((Stage)fx_anchor.getScene().getWindow(), "Search.fxml", "Search");
+    	search_stage.setOnHidden(e -> {
+    		if (album != null && album.getTitle().equals("~search_results")) {
+    			showSearchResults();
+    		}
+    	});
     }
     
     /**
@@ -388,6 +452,7 @@ public class GeneralController implements Initializable {
         Stage stage = (Stage)fx_anchor.getScene().getWindow();
         Photos.switchStage(stage, "General.fxml", "Photo Library // Current User: " +
                 Admin.users.get(Admin.user_id).getUser());
+        album = null;
     }
 
     /**
@@ -414,7 +479,7 @@ public class GeneralController implements Initializable {
         current_user.loadUser();
 
         // Create "Add New" label and add it to the TilePane
-        Label add_text = new Label("Add New");
+        Label add_text = new Label("Add New Album");
         addToTilePane(add_text, "resources/add.png");
         add_text.setOnMouseClicked(e -> addNewAlbum());
 

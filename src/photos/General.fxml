@@ -29,7 +29,7 @@
         <Button fx:id="fx_rename" disable="true" layoutX="100.0" layoutY="386.0" mnemonicParsing="false" onMouseClicked="#renameAlbum" prefHeight="36.0" prefWidth="100.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="rename" />
         <Button fx:id="fx_delete_album" disable="true" layoutX="204.0" layoutY="386.0" mnemonicParsing="false" onMouseClicked="#deleteAlbum" prefHeight="36.0" prefWidth="100.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="delete" />
         <Button fx:id="fx_search" onMouseClicked="#search" layoutX="100.0" layoutY="427.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="100.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="new search" />
-        <Button fx:id="fx_save_search" disable="true" layoutX="203.0" layoutY="427.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="100.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="save search" />
+        <Button fx:id="fx_save_search" onMouseClicked="#saveSearch" disable="true" layoutX="203.0" layoutY="427.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="100.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="save search" />
 
         <!-- Selected image display -->
         <Pane layoutX="333.0" layoutY="14.0" prefHeight="300.0" prefWidth="450.0" style="-fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;">

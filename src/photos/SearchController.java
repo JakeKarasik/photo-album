@@ -26,7 +26,7 @@ public class SearchController {
 	
 	public void search() {
 		//Create temp album for storing search results
-		Album temp = new Album("search_results");
+		Album temp = new Album("~search_results");
 		
 		//By default search by tags and by date
 		boolean search_by_tags = true, search_by_date = true;
@@ -93,9 +93,8 @@ public class SearchController {
 				}
 			}
 		}
-		System.out.println("Size of search results="+temp.photos.size());
-		// ?? what to do here
 		GeneralController.album = temp;
+		close();
 	}
 	
 	public void close() {
