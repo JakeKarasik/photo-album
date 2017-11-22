@@ -94,18 +94,9 @@ public class GeneralController implements Initializable {
      * @param title Title of new album
      */
     private void addNewAlbumData(String title){
-        // Get size of the list of albums owned by current user
-        int size = current_user.albums.size();
 
         // Check that the input does not conflict with our albums and is not null
-        for(int i = 0; i < size; i++){
-            if(title.equals(current_user.albums.get(i).getTitle()) || title.equals("")){
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Duplicate or empty title was entered");
-                alert.setHeaderText("Invalid Input");
-                alert.showAndWait();
-                return;
-            }
-        }
+        if(invalidAlbumTitle(title)){ return; }
 
         // If there is an album selected, this means we are renaming an existing album
         if(active_album != null){
@@ -232,20 +223,26 @@ public class GeneralController implements Initializable {
             int size = current_user.albums.size();
 
             // Check that the input does not conflict with our albums and is not null
-            for(int i = 0; i < size; i++){
-                if(album_name.equals(current_user.albums.get(i).getTitle()) || album_name.equals("")){
-                    Alert alert = new Alert(Alert.AlertType.ERROR, "Duplicate or empty title was entered");
-                    alert.setHeaderText("Invalid Input");
-                    alert.showAndWait();
-                    return;
-                }
-            }
+            if(invalidAlbumTitle(album_name)){ return; }
+
             album.setTitle(album_name);
             current_user.addAlbum(album);
             fx_save_search.setDisable(true);
         }
     }
-    
+
+    private boolean invalidAlbumTitle(String album_name) {
+        for (Album a : current_user.albums) {
+            if (album_name.equals(a.getTitle()) || album_name.equals("")) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Duplicate or empty title was entered");
+                alert.setHeaderText("Invalid Input");
+                alert.showAndWait();
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     // PHOTO MANAGEMENT METHODS //
 
