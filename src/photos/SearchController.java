@@ -63,9 +63,13 @@ public class SearchController {
 			search_by_date = false;
 		}
 		
+		//If given photo has all tags
+		boolean matches_all = true;
+		
 		for (Album a : GeneralController.current_user.albums) {
 			a.loadPhotos();
 			for (Photo p : a.photos) {
+				matches_all = true;
 				current_last_modified = p.getLastModified();
 				current_last_modified.set(Calendar.MILLISECOND,0);
 				//If search by date and not by tags, need to check if within range
@@ -82,22 +86,36 @@ public class SearchController {
 				//If search by tags... and possibly by date
 				if (search_by_tags) {
 					ArrayList<Tag> p_tags = p.getTags();
-					for (String t : tags) {
-						String[] tag = t.split("=");
-						//Has tag and no duplicates
-						if (p_tags.contains(new Tag(tag[0].trim(),tag[1].trim())) && !added_photos.contains(p)) {
-							//If search by date and tags, need to check if within range
-							if (search_by_date && current_last_modified.compareTo(ctd) <= 0 && current_last_modified.compareTo(cfd) >= 0) {
-								temp.photos.add(p);
-								temp.savePhotos();
-								added_photos.add(p);
-							} else if (!search_by_date) {
-								temp.photos.add(p);
-								temp.savePhotos();
-								added_photos.add(p);
+					//If search by date and tags, need to check if within range
+					if (!added_photos.contains(p) && search_by_date && current_last_modified.compareTo(ctd) <= 0 && current_last_modified.compareTo(cfd) >= 0) {
+						//Compare vs all tags to make sure all match 
+						for (String test_tags : tags) {
+							String[] test_tag = test_tags.split("=");
+							if (!p_tags.contains(new Tag(test_tag[0].trim(), test_tag[1].trim()))) {
+								matches_all = false;
+								break;
 							}
-						}	
-					}
+						}
+						if (matches_all) {
+							temp.photos.add(p);
+							temp.savePhotos();
+							added_photos.add(p);
+						}
+					} else if (!added_photos.contains(p) && !search_by_date) {
+						//Compare vs all tags to make sure all match 
+						for (String test_tags : tags) {
+							String[] test_tag = test_tags.split("=");
+							if (!p_tags.contains(new Tag(test_tag[0].trim(), test_tag[1].trim()))) {
+								matches_all = false;
+								break;
+							}
+						}
+						if (matches_all) {
+							temp.photos.add(p);
+							temp.savePhotos();
+							added_photos.add(p);
+						}
+					}	
 				}
 			}
 		}

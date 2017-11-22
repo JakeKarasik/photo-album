@@ -303,7 +303,6 @@ public class GeneralController implements Initializable {
                         for (Photo p : a.photos) {
                             if(p != null){
                                 if (p.equals(new_photo)) {
-                                    System.out.println(p.getCaption());
                                     new_photo.setCaption(p.getCaption());
                                     for (Tag t : p.getTags()) {
                                         new_photo.addTag(t);
