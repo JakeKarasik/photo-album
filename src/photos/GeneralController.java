@@ -374,6 +374,17 @@ public class GeneralController implements Initializable {
             // Get index, set caption of photo and save
             int index = fx_tilepane.getChildren().indexOf(active_photo);
             album.photos.get(index-1).setCaption(fx_caption.getText());
+
+            for (Album a : GeneralController.current_user.albums) {
+                a.loadPhotos();
+                for (Photo p : a.photos) {
+                    if (p.equals(photo)) {
+                        p.setCaption(fx_caption.getText());
+                    }
+                }
+                a.savePhotos();
+            }
+
             album.savePhotos();
 
             // Reset components
