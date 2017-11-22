@@ -303,6 +303,7 @@ public class GeneralController implements Initializable {
                         for (Photo p : a.photos) {
                             if(p != null){
                                 if (p.equals(new_photo)) {
+                                    System.out.println(p.getCaption());
                                     new_photo.setCaption(p.getCaption());
                                     for (Tag t : p.getTags()) {
                                         new_photo.addTag(t);
@@ -315,7 +316,7 @@ public class GeneralController implements Initializable {
                     }
                 }
                 album.addPhoto(new_photo);
-                Label add_text = new Label();
+                Label add_text = new Label(new_photo.getCaption());
                 addToTilePane(add_text, file.toURI().toString());
                 Image img = new Image(file.toURI().toString());
                 add_text.setOnMouseClicked(f -> setImageviewer(add_text, img));
@@ -406,6 +407,9 @@ public class GeneralController implements Initializable {
             int index = fx_tilepane.getChildren().indexOf(active_photo);
             //fx_tilepane.getChildren().get(index).setAccessibleText(fx_caption.getText());
             album.photos.get(index-1).setCaption(fx_caption.getText());
+            Label cur_label = (Label)(fx_tilepane.getChildren().get(index));
+            cur_label.setText(fx_caption.getText());
+
             Photo cur_photo = album.photos.get(index-1);
 
 
