@@ -3,6 +3,7 @@ package photos;
 import java.io.File;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
@@ -64,8 +65,15 @@ public class MoveCopyController {
 		if (dest_album == null) {
 			return;
 		}
-		
-		dest_album.loadPhotos();
+
+        dest_album.loadPhotos();
+        if(dest_album.photos.contains(GeneralController.photo)){
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Album selected already contains photo you are trying to copy");
+            alert.setHeaderText("Bad Destination");
+            alert.showAndWait();
+            return;
+        }
+
 		
 		dest_album.addPhoto(GeneralController.photo.getCopy());
 		close();
@@ -76,13 +84,20 @@ public class MoveCopyController {
 	 */
 	public void move() {
 		Album dest_album = choices.getValue();
-		
+
 		if (dest_album == null) {
 			return;
-		}
-		
+        }
+
+        dest_album.loadPhotos();
+        if(dest_album.photos.contains(GeneralController.photo)){
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Album selected already contains photo you are trying to move");
+            alert.setHeaderText("Bad Destination");
+            alert.showAndWait();
+            return;
+        }
+
 		GeneralController.album.deletePhoto(photo_index);
-		dest_album.loadPhotos();
 		dest_album.addPhoto(GeneralController.photo.getCopy());
 
 		GeneralController.moved = true;
