@@ -63,7 +63,7 @@ public class MoveCopyController {
 			return;
 		}
 		
-		dest_album.addPhoto(GeneralController.photo.getCopy());
+		dest_album.addPhoto(GeneralController.photo);
 	}
 	
 	/**
