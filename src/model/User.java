@@ -20,7 +20,9 @@ public class User implements Serializable {
     private String username;
     private String password;
 
-    public transient ObservableList<Album> albums = FXCollections.observableArrayList();
+    public static transient ObservableList<Album> albums = FXCollections.observableArrayList();
+
+    public static transient ObservableList<Photo> master_album = FXCollections.observableArrayList();
 
     public User(String user, String pass){
         this.username = user;
