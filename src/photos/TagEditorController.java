@@ -45,6 +45,18 @@ public class TagEditorController {
 		if (!tags.contains(new_tag)) {
 			//Add to tags
 			current_tags.getItems().add(new_tag);
+			
+			//Update all instances of this photo
+			for (Album a : GeneralController.current_user.albums) {
+				a.loadPhotos();
+				for (Photo p : a.photos) {
+					if (p.equals(photo)) {
+						p.addTag(new_tag);
+					}
+				}
+				a.savePhotos();
+			}
+			
 			//Save data
 			album.savePhotos();
 			
@@ -58,6 +70,7 @@ public class TagEditorController {
 	public void deleteTag() {
 		Tag selected_tag = (Tag)current_tags.getSelectionModel().getSelectedItem();
 		Album album = GeneralController.album;
+		Photo photo = GeneralController.photo;
 		
 		//If no item selected, do nothing
 		if (selected_tag == null) {
@@ -66,6 +79,18 @@ public class TagEditorController {
 		
 		//Remove
 		current_tags.getItems().remove(current_tags.getSelectionModel().getSelectedIndex());
+		
+		//Update all instances of this photo
+		for (Album a : GeneralController.current_user.albums) {
+			a.loadPhotos();
+			for (Photo p : a.photos) {
+				if (p.equals(photo)) {
+					p.removeTag(selected_tag);
+				}
+			}
+			a.savePhotos();
+		}
+		
 		//Save data
 		album.savePhotos();
 	}

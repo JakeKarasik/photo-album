@@ -108,6 +108,24 @@ public class Photo implements Serializable {
     	return photo_tags;
     }
     
+    /**
+     * Create a copy of a Photo instance given a photo
+     * @param p Photo to copy
+     * @return Photo instance with same data as original p
+     */
+	public Photo getCopy() {
+	//Create copy
+		Photo copy = new Photo(new File(this.getPath()));
+		//Copy tags
+		for (Tag t : this.getTags()) {
+			copy.addTag(t);
+		}
+		//Copy caption
+		copy.setCaption(this.getCaption());
+		
+		return copy;
+	}
+
     @Override
     public boolean equals(Object o) {
     	return o != null && (o instanceof Photo) && ((Photo)o).getPath().equals(this.getPath());

@@ -39,7 +39,9 @@ public class MoveCopyController {
 	@FXML
 	private ChoiceBox<Album> choices;
 	
-	
+	/**
+	 * Index of photo to remove
+	 */
 	private int photo_index;
 	
 	/**
@@ -63,15 +65,26 @@ public class MoveCopyController {
 			return;
 		}
 		
-		dest_album.addPhoto(GeneralController.photo);
+		dest_album.loadPhotos();
+		
+		dest_album.addPhoto(GeneralController.photo.getCopy());
+		close();
 	}
 	
 	/**
 	 * Move photo to selected album and delete from old album
 	 */
 	public void move() {
-		copy();
+		Album dest_album = choices.getValue();
+		
+		if (dest_album == null) {
+			return;
+		}
+		
 		GeneralController.album.deletePhoto(photo_index);
+		dest_album.loadPhotos();
+		dest_album.addPhoto(GeneralController.photo.getCopy());
+		close();
 	}
 	
 	
