@@ -56,14 +56,6 @@ public class Album implements Serializable {
      */
     public void addPhoto(File photo_file){
         // Create a Photo object with our File, add it to the list and save
-        String path = photo_file.getAbsolutePath();
-        int size = User.master_album.size();
-        for(int i = 0; i < size; i++){
-            if(User.master_album.get(i).getPath().equals(path)){
-                addPhoto(User.master_album.get(i));
-                return;
-            }
-        }
         Photo new_photo = new Photo(photo_file);
         photos.add(new_photo);
         savePhotos();
@@ -114,10 +106,6 @@ public class Album implements Serializable {
             ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(storeDir + File.separator + username + "-" + getTitle() + storeFile));
             ArrayList<Photo> copy = new ArrayList<>(photos);
             oos.writeObject(copy);
-
-            oos = new ObjectOutputStream(new FileOutputStream(storeDir + File.separator + username + "-" + "MASTER-ALBUM" + storeFile));
-            copy = new ArrayList<>(User.master_album);
-            oos.writeObject(copy);
             oos.close();
             return true;
         }catch(Exception e){
@@ -138,10 +126,6 @@ public class Album implements Serializable {
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(storeDir + File.separator + username + "-" + getTitle() +  storeFile));
             ArrayList<Photo> read = (ArrayList<Photo>)(ois.readObject());
             photos = FXCollections.observableArrayList(read);
-
-            ois = new ObjectInputStream(new FileInputStream(storeDir + File.separator + username + "-" + "MASTER-ALBUM" + storeFile));
-            read = (ArrayList<Photo>)(ois.readObject());
-            User.master_album = FXCollections.observableArrayList(read);
             return true;
         }catch(Exception e){
             return false;
@@ -153,26 +137,8 @@ public class Album implements Serializable {
      * @param index Index to delete
      */
     public void deletePhoto(int index){
-        int instances = 0;
-        int size = User.albums.size();
-        for(int i = 0; i < size; i++){
-            ObservableList<Photo> cur_album = User.albums.get(i).photos;
-            int album_size = cur_album.size();
-            for(int j = 0; j < album_size; j++){
-                String cur_photo_path = cur_album.get(j).getPath();
-                String index_photo_path = photos.get(i).getPath();
-                if(cur_photo_path.equals(index_photo_path)){
-                    if(instances == 1){
-                        return;
-                    }else{ instances++; }
-                }
-            }
-        }
-
         photos.remove(index);
         savePhotos();
-
-
     }
     
     @Override
