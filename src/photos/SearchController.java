@@ -27,6 +27,7 @@ public class SearchController {
 	public void search() {
 		//Create temp album for storing search results
 		Album temp = new Album("~search_results");
+		ArrayList<Photo> added_photos = new ArrayList<Photo>();
 		
 		//By default search by tags and by date
 		boolean search_by_tags = true, search_by_date = true;
@@ -68,7 +69,8 @@ public class SearchController {
 				//If search by date and not by tags, need to check if within range
 				if (search_by_date && !search_by_tags && 
 						current_last_modified.compareTo(ctd) <= 0 && 
-						current_last_modified.compareTo(cfd) >= 0 ) {
+						current_last_modified.compareTo(cfd) >= 0 &&
+						!added_photos.contains(p)) { //don't add duplicates
 					temp.photos.add(p);
 					temp.savePhotos();
 					continue;
@@ -80,15 +82,18 @@ public class SearchController {
 					for (String t : tags) {
 						String[] tag = t.split("=");
 						if (p_tags.contains(new Tag(tag[0].trim(),tag[1].trim()))) {
-							//If search by date and tags, need to check if within range
-							if (search_by_date && current_last_modified.compareTo(ctd) <= 0 && current_last_modified.compareTo(cfd) >= 0) {
-								temp.photos.add(p);
-								temp.savePhotos();
-							} else if (!search_by_date) {
-								temp.photos.add(p);
-								temp.savePhotos();
+							//Don't add duplicates
+							if (!added_photos.contains(p)) {
+								//If search by date and tags, need to check if within range
+								if (search_by_date && current_last_modified.compareTo(ctd) <= 0 && current_last_modified.compareTo(cfd) >= 0) {
+									temp.photos.add(p);
+									temp.savePhotos();
+								} else if (!search_by_date) {
+									temp.photos.add(p);
+									temp.savePhotos();
+								}
 							}
-						}
+						}	
 					}
 				}
 			}

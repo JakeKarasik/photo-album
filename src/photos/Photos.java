@@ -54,7 +54,7 @@ public class Photos extends Application implements Serializable {
             swap_stage.setResizable(false);
             swap_stage.show();
         }catch(Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 
