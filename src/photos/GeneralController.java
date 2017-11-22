@@ -118,7 +118,8 @@ public class GeneralController implements Initializable {
         Album new_album = new Album(title);
         current_user.addAlbum(new_album);
         Label add_text = new Label(title);
-        addToTilePane(add_text,  "resources/folder.png");
+        File resource_dir = new File(System.getProperty("user.dir") + "/data/resources/folder.png");
+        addToTilePane(add_text, resource_dir.toURI().toString());
         add_text.setOnMouseClicked(e -> mouseHandler(e, add_text));
     }
 
@@ -156,7 +157,8 @@ public class GeneralController implements Initializable {
 
             // Create "Add New" label and add it to the TilePane
             Label add_text = new Label("Add New Photo");
-            addToTilePane(add_text, "resources/add.png");
+            File resource_dir = new File(System.getProperty("user.dir") + "/data/resources/add.png");
+            addToTilePane(add_text, resource_dir.toURI().toString());
             add_text.setOnMouseClicked(f -> addNewPhoto());
 
             // For each photo in album, add it to the TilePane and set action on click
@@ -197,7 +199,8 @@ public class GeneralController implements Initializable {
 
         // Create "Add New" label and add it to the TilePane
         Label add_text = new Label("Search Results");
-        addToTilePane(add_text, "resources/search_results.png");
+        File resource_dir = new File(System.getProperty("user.dir") + "/data/resources/search_results.png");
+        addToTilePane(add_text, resource_dir.toURI().toString());
         //add_text.setOnMouseClicked(f -> addNewPhoto());
 
         // For each photo in album, add it to the TilePane and set action on click
@@ -373,20 +376,24 @@ public class GeneralController implements Initializable {
 
             // Get index, set caption of photo and save
             int index = fx_tilepane.getChildren().indexOf(active_photo);
+            //fx_tilepane.getChildren().get(index).setAccessibleText(fx_caption.getText());
             album.photos.get(index-1).setCaption(fx_caption.getText());
 
-            for (Album a : GeneralController.current_user.albums) {
-                a.loadPhotos();
-                for (Photo p : a.photos) {
-                    if (p.equals(photo)) {
-                        p.setCaption(fx_caption.getText());
-                    }
-                }
-                a.savePhotos();
-            }
 
             album.savePhotos();
-
+            for (Album a : current_user.albums) {
+                if(a != null){
+                    a.loadPhotos();
+                    for (Photo p : a.photos) {
+                        if(p != null){
+                            if (p.equals(photo)) {
+                                p.setCaption(fx_caption.getText());
+                            }
+                        }
+                    }
+                    a.savePhotos();
+                }
+            }
             // Reset components
             fx_edit_caption.setText("edit caption");
             fx_caption.setDisable(true);
@@ -444,8 +451,8 @@ public class GeneralController implements Initializable {
      */
     private void addToTilePane(Label label, String path){
         // Get ImageView to add
-        File resource_dir = new File(System.getProperty("user.dir") + "/data/" + path);
-        Image img = new Image(resource_dir.toURI().toString(), 120, 120, false, false);
+
+        Image img = new Image(path, 120, 120, false, false);
         ImageView add_imv = new ImageView(img);
 
         // Set label characteristics and add to TilePane
@@ -493,7 +500,8 @@ public class GeneralController implements Initializable {
 
         // Create "Add New" label and add it to the TilePane
         Label add_text = new Label("Add New Album");
-        addToTilePane(add_text, "resources/add.png");
+        File resource_dir = new File(System.getProperty("user.dir") + "/data/resources/add.png");
+        addToTilePane(add_text, resource_dir.toURI().toString());
         add_text.setOnMouseClicked(e -> addNewAlbum());
 
         // Display the albums of User
@@ -502,7 +510,8 @@ public class GeneralController implements Initializable {
 
             // Display albums as labels with icon and text
             Label icon = new Label(current_user.albums.get(i).getTitle());
-            addToTilePane(icon, "resources/folder.png");
+            File folder_resource_dir = new File(System.getProperty("user.dir") + "/data/resources/folder.png");
+            addToTilePane(icon, folder_resource_dir.toURI().toString());
 
             // Set behavior when clicked
             icon.setOnMouseClicked(e -> mouseHandler(e, icon));
