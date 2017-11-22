@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-    public final String storeDir = "database/user";
+    public final String storeDir = "data/user";
     public final String storeFile = ".ser";
 
     private String username;

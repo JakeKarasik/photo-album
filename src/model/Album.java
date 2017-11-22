@@ -20,7 +20,7 @@ public class Album implements Serializable {
 	
 	// Metadata
     private String album_title;
-    public final String storeDir = "database/user";
+    public final String storeDir = "data/user";
     public final String storeFile = ".ser";
 
     /*
