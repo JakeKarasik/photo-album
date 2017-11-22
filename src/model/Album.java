@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class Album implements Serializable {
 
     /**
-	 * 
+	 * ID used for tracking serial version
 	 */
 	private static final long serialVersionUID = 1L;
 	
@@ -58,6 +58,15 @@ public class Album implements Serializable {
         // Create a Photo object with our File, add it to the list and save
         Photo new_photo = new Photo(photo_file);
         photos.add(new_photo);
+        savePhotos();
+    }
+    
+    /**
+     * Adds photo object to list photos
+     * @param p Photo to add
+     */
+    public void addPhoto(Photo p) {
+    	photos.add(p);
         savePhotos();
     }
 
@@ -130,5 +139,11 @@ public class Album implements Serializable {
     public void deletePhoto(int index){
         photos.remove(index);
         savePhotos();
+    }
+    
+    @Override
+    public String toString() {
+		return album_title;
+    	
     }
 }

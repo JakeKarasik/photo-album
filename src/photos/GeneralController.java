@@ -214,6 +214,7 @@ public class GeneralController implements Initializable {
         fx_edit_tags.setDisable(false);
         fx_prev.setDisable(false);
         fx_next.setDisable(false);
+        fx_move_copy.setDisable(false);
     }
 
     /**
@@ -325,7 +326,7 @@ public class GeneralController implements Initializable {
     }
     
     /**
-     * Edit tags of selected photo
+     * Launch edit tags window
      */
     public void editTags() {
     	//Get index of current photo
@@ -336,8 +337,21 @@ public class GeneralController implements Initializable {
     	edit_tags_stage.setOnHidden(e -> fx_tags.setText(photo.getTags().toString()));
     }
     
+    /**
+     * Launch window to search for images
+     */
     public void search() {
     	Photos.newStage((Stage)fx_anchor.getScene().getWindow(), "Search.fxml", "Search");
+    }
+    
+    /**
+     * Launch window to move or copy image
+     */
+    public void moveCopy() {
+    	//Get index of current photo
+    	int index = fx_tilepane.getChildren().indexOf(active_photo) - 1;
+    	photo = album.photos.get(index);
+    	Photos.newStage((Stage)fx_anchor.getScene().getWindow(), "MoveCopy.fxml", "Move or Copy");
     }
 
     // GENERAL METHODS //

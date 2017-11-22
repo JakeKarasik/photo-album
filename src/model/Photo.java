@@ -12,6 +12,10 @@ import java.util.Calendar;
  */
 public class Photo implements Serializable {
 
+	
+	/**
+	 * ID used for tracking serial version
+	 */
 	private static final long serialVersionUID = 1L;
 	
     // Metadata
@@ -102,5 +106,29 @@ public class Photo implements Serializable {
      */
     public ArrayList<Tag> getTags() {
     	return photo_tags;
+    }
+    
+    
+    /**
+     * Create a copy of a Photo instance given a photo
+     * @param p Photo to copy
+     * @return Photo instance with same data as original p
+     */
+    public Photo getCopy() {
+    	//Create copy
+    	Photo copy = new Photo(new File(this.getPath()));
+    	//Copy tags
+    	for (Tag t : this.getTags()) {
+    		copy.addTag(t);
+    	}
+    	//Copy caption
+    	copy.setCaption(this.getCaption());
+    	
+    	return copy;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+    	return o != null && (o instanceof Photo) && ((Photo)o).getPath().equals(this.getPath());
     }
 }

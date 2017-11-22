@@ -17,6 +17,10 @@ import java.io.Serializable;
 @SuppressWarnings("WeakerAccess")
 public class Photos extends Application implements Serializable {
 	
+	
+	/**
+	 * ID used for tracking serial version
+	 */
 	private static final long serialVersionUID = 1L;
 	
     /**

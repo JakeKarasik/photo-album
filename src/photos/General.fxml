@@ -54,7 +54,7 @@
         <Button fx:id="fx_next" disable="true" layoutX="738.0" layoutY="341.0" mnemonicParsing="false" onMouseClicked="#nextPhoto" prefHeight="36.0" prefWidth="44.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="--&gt;" />
         <Button fx:id="fx_edit_caption" disable="true" layoutX="597.0" layoutY="341.0" mnemonicParsing="false" onMouseClicked="#editCaption" prefHeight="36.0" prefWidth="90.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="edit caption" />
         <Button fx:id="fx_delete_photo" disable="true" layoutX="597.0" layoutY="382.0" mnemonicParsing="false" onMouseClicked="#deletePhoto" prefHeight="36.0" prefWidth="90.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="delete" />
-        <Button fx:id="fx_move_copy" disable="true" layoutX="693.0" layoutY="382.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="90.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="move/copy" />
+        <Button fx:id="fx_move_copy" disable="true" layoutX="693.0" layoutY="382.0" mnemonicParsing="false" onMouseClicked="#moveCopy" prefHeight="36.0" prefWidth="90.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="move/copy" />
         <Button fx:id="fx_edit_tags" disable="true" layoutX="597.0" layoutY="423.0" mnemonicParsing="false" onMouseClicked="#editTags" prefHeight="36.0" prefWidth="90.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="edit tags" />
 
         <!-- Misc. -->
