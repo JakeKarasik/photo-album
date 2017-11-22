@@ -421,6 +421,8 @@ public class GeneralController implements Initializable {
         fx_delete_photo.setDisable(true);
         fx_prev.setDisable(true);
         fx_next.setDisable(true);
+        fx_move_copy.setDisable(true);
+        fx_edit_tags.setDisable(true);
     }
 
     /**
