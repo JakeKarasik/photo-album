@@ -375,11 +375,6 @@ public class GeneralController implements Initializable {
             album.photos.get(index-1).setCaption(fx_caption.getText());
             album.savePhotos();
 
-            int size = User.master_album.indexOf(album.photos.get(index-1));
-            if(size >= 0){
-                System.out.println("HI: " + User.master_album.get(size).getCaption());
-            }
-
             // Reset components
             fx_edit_caption.setText("edit caption");
             fx_caption.setDisable(true);

@@ -60,15 +60,12 @@ public class Album implements Serializable {
         int size = User.master_album.size();
         for(int i = 0; i < size; i++){
             if(User.master_album.get(i).getPath().equals(path)){
-                System.out.println("HI");
                 addPhoto(User.master_album.get(i));
-                System.out.println(User.master_album.get(i));
                 return;
             }
         }
         Photo new_photo = new Photo(photo_file);
         photos.add(new_photo);
-        User.master_album.add(new_photo);
         savePhotos();
     }
     
@@ -77,7 +74,6 @@ public class Album implements Serializable {
      * @param p Photo to add
      */
     public void addPhoto(Photo p) {
-        System.out.println(p);
     	photos.add(p);
         savePhotos();
     }
@@ -143,6 +139,9 @@ public class Album implements Serializable {
             ArrayList<Photo> read = (ArrayList<Photo>)(ois.readObject());
             photos = FXCollections.observableArrayList(read);
 
+            ois = new ObjectInputStream(new FileInputStream(storeDir + File.separator + username + "-" + "MASTER-ALBUM" + storeFile));
+            read = (ArrayList<Photo>)(ois.readObject());
+            User.master_album = FXCollections.observableArrayList(read);
             return true;
         }catch(Exception e){
             return false;
