@@ -46,12 +46,10 @@ public class Photos extends Application implements Serializable {
         try {
             Parent root = FXMLLoader.load(Photos.class.getResource(next_fxml));
             Scene scene = new Scene(root);
-            scene.getStylesheets().add("resources/photos.css");
-
-
+            File ico = new File(System.getProperty("user.dir") + "/data/resources/");
+            String path = ico.toURI().toString();
             swap_stage.setTitle(title);
-            File ico = new File(System.getProperty("user.dir") + "/data/resources/icon.png");
-            swap_stage.getIcons().add(new Image(ico.toURI().toString()));
+            swap_stage.getIcons().add(new Image(path + "icon.png"));
             swap_stage.setScene(scene);
             swap_stage.setResizable(false);
             swap_stage.show();
