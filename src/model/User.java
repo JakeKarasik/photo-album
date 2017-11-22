@@ -66,7 +66,7 @@ public class User implements Serializable {
             if(getUser().equals("stock")){
                 Album stock = new Album("stock");
                 albums.add(stock);
-                File path = new File(System.getProperty("user.dir") + "data/resources/stock");
+                File path = new File(System.getProperty("user.dir") + "/data/resources/stock");
                 File[] dir = path.listFiles();
                 if(dir != null){
                     for(File file : dir){
