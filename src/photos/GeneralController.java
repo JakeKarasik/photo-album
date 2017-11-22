@@ -163,7 +163,8 @@ public class GeneralController implements Initializable {
             int size = album.photos.size();
             for(int j = 0; j < size; j++){
                 File temp = new File(album.photos.get(j).getPath());
-                Label thumb = new Label(temp.getName());
+                //Label thumb = new Label(temp.getName());
+                Label thumb = new Label(album.photos.get(j).getCaption());
                 addToTilePane(thumb, temp.toURI().toString());
                 Image img = new Image(temp.toURI().toString());
                 thumb.setOnMouseClicked(f -> setImageviewer(thumb, img));
@@ -432,7 +433,8 @@ public class GeneralController implements Initializable {
      */
     private void addToTilePane(Label label, String path){
         // Get ImageView to add
-        Image img = new Image(path, 120, 120, false, false);
+        File resource_dir = new File(System.getProperty("user.dir") + "/data/" + path);
+        Image img = new Image(resource_dir.toURI().toString(), 120, 120, false, false);
         ImageView add_imv = new ImageView(img);
 
         // Set label characteristics and add to TilePane
