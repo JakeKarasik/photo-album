@@ -66,7 +66,7 @@ public class User implements Serializable {
             if(getUser().equals("stock")){
                 Album stock = new Album("stock");
                 albums.add(stock);
-                File path = new File("src/resources/stock");
+                File path = new File(System.getProperty("user.dir") + "data/resources/stock");
                 File[] dir = path.listFiles();
                 if(dir != null){
                     for(File file : dir){
@@ -93,7 +93,7 @@ public class User implements Serializable {
         try{
             String rm_album = albums.get(index).getTitle();
             String rm_owner = getUser();
-            File path = new File("database/user");
+            File path = new File(System.getProperty("user.dir") + "/data/user");
             File[] dir = path.listFiles();
             if(dir != null){
                 for(File file : dir){
