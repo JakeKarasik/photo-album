@@ -153,6 +153,11 @@ public class Photo implements Serializable {
 		return copy;
 	}
 
+    /**
+     * Compares Photo objects by their paths
+     * @param o Photo object to compare to
+     * @return True if they are equivalent, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
     	return o != null && (o instanceof Photo) && ((Photo)o).getPath().equals(this.getPath());

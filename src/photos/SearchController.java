@@ -14,16 +14,28 @@ import model.*;
  * @author Jake Karasik (jak451)
  */
 public class SearchController {
-	
+
+    /**
+     * Close and search
+     */
 	@FXML
 	private Button close, search;
-	
+
+    /**
+     * Allows user to choose time period
+     */
 	@FXML
 	private DatePicker from, to;
-	
+
+    /**
+     * Tags to search on
+     */
 	@FXML
 	private TextArea search_tags;
-	
+
+    /**
+     * Searches user's albums based on given  criteria
+     */
 	public void search() {
 		//Create temp album for storing search results
 		Album temp = new Album("~search_results");
@@ -122,7 +134,10 @@ public class SearchController {
 		GeneralController.album = temp;
 		close();
 	}
-	
+
+    /**
+     * Closes Search window
+     */
 	public void close() {
 		Stage stage = (Stage)close.getScene().getWindow();
 		stage.close();

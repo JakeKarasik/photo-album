@@ -16,15 +16,27 @@ import java.util.ResourceBundle;
  */
 @SuppressWarnings ("unchecked")
 public class AdminController implements Initializable {
+    /**
+     * Container for the Admin dashboard
+     */
     @FXML
     private AnchorPane fx_anchor;
 
+    /**
+     * New username to be added
+     */
     @FXML
     private TextField new_username;
 
+    /**
+     * Password to be attached to new user
+     */
     @FXML
     private PasswordField new_password, verify_password;
 
+    /**
+     * Shows list of users
+     */
     @FXML
     private ListView user_list;
 

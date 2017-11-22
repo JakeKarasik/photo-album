@@ -13,23 +13,58 @@ import java.util.ArrayList;
 @SuppressWarnings({"unchecked", "Duplicates"})
 public class User implements Serializable {
 
+    /**
+     * ID used for tracking serial version
+     */
 	private static final long serialVersionUID = 1L;
+
+	/**
+     * Directory where user will be stored
+	 */
     public final String storeDir = "data/user";
+
+    /**
+     * File extension of serialization
+     */
     public final String storeFile = ".ser";
 
+    /**
+     * Username of user
+     */
     private String username;
+
+    /**
+     * Password of user
+     */
     private String password;
 
+    /**
+     * Stores list of albums owned by user
+     */
     public transient ObservableList<Album> albums = FXCollections.observableArrayList();
 
+    /**
+     * Creates a User object
+     * @param user Username of user
+     * @param pass Password of user
+     */
     public User(String user, String pass){
         this.username = user;
         this.password = pass;
     }
 
+    /**
+     * Getter for username
+     * @return String username
+     */
     public String getUser(){
         return username;
     }
+
+    /**
+     * Getter for password
+     * @return String password
+     */
     public String getPass(){
         return password;
     }
@@ -37,7 +72,7 @@ public class User implements Serializable {
 
     /**
      * Serializes list of albums
-     * @return True if successful, false otherwise
+     * @return true if successful, false otherwise
      */
     public boolean saveUser() {
         try{
@@ -53,7 +88,7 @@ public class User implements Serializable {
 
     /**
      * Deserializes list of albums
-     * @return True if successful, false otherwise
+     * @return true if successful, false otherwise
      */
     public boolean loadUser(){
         try{
@@ -91,6 +126,11 @@ public class User implements Serializable {
         saveUser();
     }
 
+    /**
+     * Deletes album
+     * @param index Index of album to be deleted
+     * @return true if successful, false otherwise
+     */
     public boolean deleteAlbum(int index){
         try{
             String rm_album = albums.get(index).getTitle();
@@ -113,8 +153,8 @@ public class User implements Serializable {
     }
 
     /**
-     * ALlows ListView to print out usernames
-     * @return String
+     * Allows ListView to print out usernames
+     * @return String username
      */
     @Override
     public String toString(){
@@ -124,7 +164,7 @@ public class User implements Serializable {
     /**
      * Allows contains() and indexOf() to search for users
      * @param s User to be compared to
-     * @return True if match found, false otherwise
+     * @return true if match found, false otherwise
      */
     @Override
     public boolean equals(Object s){

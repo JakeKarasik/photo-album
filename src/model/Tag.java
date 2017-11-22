@@ -30,12 +30,21 @@ public class Tag implements Serializable {
 		this.name = name;
 		this.value = value;
 	}
-	
+
+    /**
+     * Overrides Object equals
+     * @param t Object to compare to
+     * @return true if is an instance of Tag and both name and value match
+     */
 	@Override
 	public boolean equals(Object t) {
 		return t != null && (t instanceof Tag) && this.name.equalsIgnoreCase(((Tag)t).name) && this.value.equalsIgnoreCase(((Tag)t).value);
 	}
-	
+
+    /**
+     * Overrides toString
+     * @return Name and value pair
+     */
 	@Override
     public String toString() {
 		return this.name + "=" + this.value;

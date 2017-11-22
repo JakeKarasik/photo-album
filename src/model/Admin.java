@@ -17,11 +17,19 @@ public class Admin{
     // List of users managed by admin
     public static ObservableList<User> users = FXCollections.observableArrayList();
 
-    // Location to store list of users
+    /**
+     * Location to store list of users
+     */
     public static final String storeDir = "data";
-    public static String storeFile = "users.ser";
 
-    // ID of active user currently logged in
+    /**
+     * Location to store list of users
+     */
+    public static final String storeFile = "users.ser";
+
+    /**
+     * ID of active user currently logged in
+     */
     public static int user_id  = -1;
 
     /**

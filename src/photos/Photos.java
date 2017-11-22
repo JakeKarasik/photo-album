@@ -72,7 +72,11 @@ public class Photos extends Application implements Serializable {
         switchStage(new_stage, next_fxml, title);
         return new_stage;
     }
-	
+
+    /**
+     * Runs program
+     * @param args Arguments to run program
+     */
 	public static void main(String[] args) {
 		launch(args);
 	}

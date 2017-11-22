@@ -15,20 +15,35 @@ import model.*;
  */
 public class TagEditorController {
 
+	/**
+	 * New tag value and name pair to be added
+	 */
 	@FXML
 	private TextField new_tag_value, new_tag_name;
-	
+
+    /**
+     * List of current tags of selected photo
+     */
 	@FXML
 	private ListView<Tag> current_tags;
-	
+
+    /**
+     * Button to go back to General
+     */
 	@FXML
 	private Button close;
-	
-	@FXML
+
+    /**
+     * Setup for photo library
+     * {@inheritDoc}
+     */
     public void initialize() {
 		current_tags.setItems(FXCollections.observableList(GeneralController.photo.getTags()));
     }
-	
+
+    /**
+     * Adds tag based on input
+     */
 	public void addTag() {
 		Photo photo = GeneralController.photo;
 		Album album = GeneralController.album;
@@ -66,7 +81,10 @@ public class TagEditorController {
 		}
 		
 	}
-	
+
+    /**
+     * Deletes a selected tag in the ListView
+     */
 	public void deleteTag() {
 		Tag selected_tag = (Tag)current_tags.getSelectionModel().getSelectedItem();
 		Album album = GeneralController.album;
@@ -94,7 +112,10 @@ public class TagEditorController {
 		//Save data
 		album.savePhotos();
 	}
-	
+
+    /**
+     * Closes TagEditor
+     */
 	public void close() {
 		Stage stage = (Stage)close.getScene().getWindow();
 		stage.close();
