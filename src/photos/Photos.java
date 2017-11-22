@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
+import java.io.File;
 import java.io.Serializable;
 
 /**
@@ -49,7 +50,8 @@ public class Photos extends Application implements Serializable {
 
 
             swap_stage.setTitle(title);
-            swap_stage.getIcons().add(new Image("resources/icon.png"));
+            File ico = new File(System.getProperty("user.dir") + "/data/resources/icon.png");
+            swap_stage.getIcons().add(new Image(ico.toURI().toString()));
             swap_stage.setScene(scene);
             swap_stage.setResizable(false);
             swap_stage.show();

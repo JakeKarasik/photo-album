@@ -35,6 +35,8 @@ public class GeneralController implements Initializable {
 
     // Label of selected photo - viewing Photos
     Label active_photo = null;
+
+    static boolean moved = false;
     
     static Photo photo;
 
@@ -292,11 +294,37 @@ public class GeneralController implements Initializable {
 
         // If a file was selected, add it
         if(file != null){
-            album.addPhoto(file);
-            Label add_text = new Label(file.getName());
-            addToTilePane(add_text, file.toURI().toString());
-            Image img = new Image(file.toURI().toString());
-            add_text.setOnMouseClicked(f -> setImageviewer(add_text, img));
+            Photo new_photo = new Photo(file);
+            if(!album.photos.contains(new_photo)){
+                boolean found = false;
+                for (Album a : current_user.albums) {
+                    if(a != null){
+                        a.loadPhotos();
+                        for (Photo p : a.photos) {
+                            if(p != null){
+                                if (p.equals(new_photo)) {
+                                    new_photo.setCaption(p.getCaption());
+                                    for (Tag t : p.getTags()) {
+                                        new_photo.addTag(t);
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                        if(found){ break; }
+                    }
+                }
+                album.addPhoto(new_photo);
+                Label add_text = new Label();
+                addToTilePane(add_text, file.toURI().toString());
+                Image img = new Image(file.toURI().toString());
+                add_text.setOnMouseClicked(f -> setImageviewer(add_text, img));
+            }else{
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Photo already inside current album");
+                alert.setHeaderText("Invalid Photo Selected");
+                alert.showAndWait();
+                return;
+            }
         }
     }
 
@@ -436,7 +464,16 @@ public class GeneralController implements Initializable {
     	//Get index of current photo
     	int index = fx_tilepane.getChildren().indexOf(active_photo) - 1;
     	photo = album.photos.get(index);
-    	Photos.newStage((Stage)fx_anchor.getScene().getWindow(), "MoveCopy.fxml", "Move or Copy");
+    	Stage move_copy_stage = Photos.newStage((Stage)fx_anchor.getScene().getWindow(), "MoveCopy.fxml", "Move or Copy");
+    	move_copy_stage.setOnHidden(e -> moveCopyHelper());
+    }
+
+    public void moveCopyHelper(){
+        if(moved == true){
+            int index = fx_tilepane.getChildren().indexOf(active_photo);
+            fx_tilepane.getChildren().remove(index);
+            moved = false;
+        }
     }
 
     // GENERAL METHODS //

@@ -84,6 +84,9 @@ public class MoveCopyController {
 		GeneralController.album.deletePhoto(photo_index);
 		dest_album.loadPhotos();
 		dest_album.addPhoto(GeneralController.photo.getCopy());
+
+		GeneralController.moved = true;
+
 		close();
 	}
 	
