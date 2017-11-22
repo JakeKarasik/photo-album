@@ -73,8 +73,10 @@ public class User implements Serializable {
                         stock.addPhoto(file);
                     }
                 }
+                stock.savePhotos();
             }
             saveUser();
+
             return false;
         }
     }

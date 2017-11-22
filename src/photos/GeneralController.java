@@ -164,15 +164,7 @@ public class GeneralController implements Initializable {
             add_text.setOnMouseClicked(f -> addNewPhoto());
 
             // For each photo in album, add it to the TilePane and set action on click
-            int size = album.photos.size();
-            for(int j = 0; j < size; j++){
-                File temp = new File(album.photos.get(j).getPath());
-                //Label thumb = new Label(temp.getName());
-                Label thumb = new Label(album.photos.get(j).getCaption());
-                addToTilePane(thumb, temp.toURI().toString());
-                Image img = new Image(temp.toURI().toString());
-                thumb.setOnMouseClicked(f -> setImageviewer(thumb, img));
-            }
+            displayAlbum();
 
             // Set buttons
             fx_back.setDisable(false);
@@ -190,7 +182,18 @@ public class GeneralController implements Initializable {
             fx_rename.setDisable(false);
             fx_delete_album.setDisable(false);
         }
-    }  
+    }
+
+    private void displayAlbum(){
+        for(Photo j : album.photos){
+            File temp = new File(j.getPath());
+            Label thumb = new Label(j.getCaption());
+            addToTilePane(thumb, temp.toURI().toString());
+            Image img = new Image(temp.toURI().toString());
+            thumb.setOnMouseClicked(f -> setImageviewer(thumb, img));
+        }
+    }
+
     
     /**
      * Loads search results into main display
@@ -206,14 +209,7 @@ public class GeneralController implements Initializable {
         //add_text.setOnMouseClicked(f -> addNewPhoto());
 
         // For each photo in album, add it to the TilePane and set action on click
-        int size = album.photos.size();
-        for(int j = 0; j < size; j++){
-            File temp = new File(album.photos.get(j).getPath());
-            Label thumb = new Label(album.photos.get(j).getCaption());
-            addToTilePane(thumb, temp.toURI().toString());
-            Image img = new Image(temp.toURI().toString());
-            thumb.setOnMouseClicked(f -> setImageviewer(thumb, img));
-        }
+        displayAlbum();
 
         // Set buttons
         fx_back.setDisable(false);
@@ -548,10 +544,10 @@ public class GeneralController implements Initializable {
 
         // Display the albums of User
         int size = current_user.albums.size();
-        for(int i = 0; i < size; i++){
+        for(Album a : current_user.albums){
 
             // Display albums as labels with icon and text
-            Label icon = new Label(current_user.albums.get(i).getTitle());
+            Label icon = new Label(a.getTitle());
             File folder_resource_dir = new File(System.getProperty("user.dir") + "/data/resources/folder.png");
             addToTilePane(icon, folder_resource_dir.toURI().toString());
 

@@ -158,7 +158,7 @@ public class Admin{
             String rm_user = users.get(index).getUser();
 
             // Get directory and list of files that inside
-            File path = new File(System.getProperty("user.dir") + "data/user");
+            File path = new File(System.getProperty("user.dir") + "/data/user");
             File[] dir = path.listFiles();
 
             // Search directory for files that match username and delete
