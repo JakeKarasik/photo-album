@@ -62,6 +62,11 @@ public class User implements Serializable {
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(storeDir + File.separator + getUser() + storeFile));
             ArrayList<Album> read = (ArrayList<Album>)(ois.readObject());
             albums = FXCollections.observableArrayList(read);
+
+            ois = new ObjectInputStream(new FileInputStream(storeDir + File.separator + username + "-" + "MASTER-ALBUM" + storeFile));
+
+            ArrayList<Photo> read_master = (ArrayList<Photo>)(ois.readObject());
+            User.master_album = FXCollections.observableArrayList(read_master);
             return true;
         }catch(Exception e){
             albums = FXCollections.observableArrayList();
