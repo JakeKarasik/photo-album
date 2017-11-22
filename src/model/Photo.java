@@ -2,6 +2,7 @@ package model;
 
 import java.io.File;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -53,8 +54,35 @@ public class Photo implements Serializable {
      * @return String date of last modification
      */
     public String getDate(){return last_modified.getTime().toString(); }
-    
-    
+
+    /**
+     * Gets date of our photo in a shorter readable format
+     * @return String date of last modification in a shorter format
+     */
+    public String getShortDate() {
+        SimpleDateFormat short_format = new SimpleDateFormat("MM/dd/yy");
+        return short_format.format(last_modified.getTime());
+    }
+
+    /**
+     * Returns true if photo is older than arg
+     * @param p Photo to compare to
+     * @return
+     */
+    public boolean isOlder(Photo p){
+        return (last_modified.compareTo(p.last_modified) > 0);
+    }
+
+    /**
+     * Returns true if photo is newer than arg
+     * @param p Photo to compare to
+     * @return
+     */
+    public boolean isNewer(Photo p){
+        return (last_modified.compareTo(p.last_modified) < 0);
+    }
+
+
     /**
      * Gets date of our photo as calendar object
      * @return Date last modified
@@ -110,11 +138,10 @@ public class Photo implements Serializable {
     
     /**
      * Create a copy of a Photo instance given a photo
-     * @param p Photo to copy
      * @return Photo instance with same data as original p
      */
 	public Photo getCopy() {
-	//Create copy
+	    //Create copy
 		Photo copy = new Photo(new File(this.getPath()));
 		//Copy tags
 		for (Tag t : this.getTags()) {

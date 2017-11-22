@@ -631,14 +631,35 @@ public class GeneralController implements Initializable {
         add_text.setOnMouseClicked(e -> addNewAlbum());
 
         // Display the albums of User
-        int size = current_user.albums.size();
         for(Album a : current_user.albums){
-
             // Display albums as labels with icon and text
-            Label icon = new Label(a.getTitle());
-            File folder_resource_dir = new File(System.getProperty("user.dir") + "/data/resources/folder.png");
-            addToTilePane(icon, folder_resource_dir.toURI().toString());
 
+            a.loadPhotos();
+            int size = a.photos.size();
+
+            Photo oldest = null;
+            Photo newest = null;
+
+            for(Photo p : a.photos){
+                if(oldest == null){
+                    oldest = p;
+                    newest = p;
+                }
+                if(p.isOlder(oldest)){
+                    oldest = p;
+                }else if(p.isNewer(newest)){
+                    newest = p;
+                }
+            }
+            File folder_resource_dir = new File(System.getProperty("user.dir") + "/data/resources/folder.png");
+            Label icon;
+            if (oldest == null){
+                icon = new Label(a.getTitle() + " (" + size + ")\n" + " ");
+            }else{
+                icon = new Label(a.getTitle() + " (" + size + ")\n" + oldest.getShortDate() + " to " + newest.getShortDate());
+            }
+
+            addToTilePane(icon, folder_resource_dir.toURI().toString());
             // Set behavior when clicked
             icon.setOnMouseClicked(e -> mouseHandler(e, icon));
         }
