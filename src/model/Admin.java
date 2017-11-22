@@ -164,7 +164,7 @@ public class Admin{
             // Search directory for files that match username and delete
             if(dir != null){
                 for(File file : dir){
-                    if(file.getPath().contains(rm_user)){
+                    if(file.getPath().contains(rm_user + "-") || file.getName().equals(rm_user + ".ser")){
                         file.delete();
                     }
                 }
