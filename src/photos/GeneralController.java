@@ -24,47 +24,91 @@ import java.util.ResourceBundle;
  */
 public class GeneralController implements Initializable {
 
-    // Current user
+    /**
+     * Current user of photo library
+     */
     static User current_user;
 
-    // Album being accessed - viewing Photos
+    /**
+     * Album being accessed while viewing photos
+     */
     static Album album = null;
 
-    // Label of selected album - viewing Albums
+    /**
+     * Label of selected album while viewing albums
+     */
     Label active_album = null;
 
-    // Label of selected photo - viewing Photos
+    /**
+     * Label of selected photo while viewing photos
+     */
     Label active_photo = null;
 
+    /**
+     * Flag marked as true if move was called on a photo
+     */
     static boolean moved = false;
-    
+
+    /**
+     * Selected photo that can be modified by other controllers
+     */
     static Photo photo;
 
+    /**
+     * Container for the photo library
+     */
     @FXML
     private AnchorPane fx_anchor;
 
+    /**
+     * Displays a photo when it is selected
+     */
     @FXML
     private ImageView fx_imageviewer;
 
+    /**
+     * Allows user to interact with photo library e.g. create, delete, search, etc.
+     */
     @FXML
     private Button fx_create, fx_rename, fx_delete_album, fx_search, fx_save_search, fx_back, fx_logout, fx_prev,
             fx_next, fx_edit_caption, fx_delete_photo, fx_move_copy, fx_edit_tags;
 
+    /**
+     * Displays metadata of a photo when it is selected
+     */
     @FXML
     private TextField fx_name, fx_caption, fx_date;
 
+    /**
+     * Displays tags of a photo when it is selected
+     */
     @FXML
     private TextArea fx_tags;
 
+    /**
+     * Displays user's albums by default, loads an album's photos when it is opened
+     */
     @FXML
     private TilePane fx_tilepane;
 
-    // ALBUM MANAGEMENT METHODS //
+    /*
+     * ALBUM MANAGEMENT METHODS
+     * renameAlbum()
+     * addNewAlbum()
+     * addNewAlbumData()
+     * deleteAlbum()
+     * mouseHandler()
+     * displayAlbum()
+     * showSearchResults()
+     * saveSearch()
+     * invalidAlbumTitle()
+     */
 
     /**
      * Renames a selected Album via TextInputDialog
      */
     public void renameAlbum(){
+        // Create a dialog and pass input into addNewAlbumData
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Rename Album");
         dialog.setHeaderText("Enter new name of selected album");
@@ -76,12 +120,15 @@ public class GeneralController implements Initializable {
      * Adds a new album via TextInputDialog
      */
     private void addNewAlbum(){
+        // If there is a selected album, deselect it
         if(active_album != null){
             active_album.setStyle("-fx-border-color:transparent");
             active_album = null;
             fx_rename.setDisable(true);
             fx_delete_album.setDisable(true);
         }
+
+        // Create a dialog and pass input into addNewAlbumData
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("New Album");
         dialog.setHeaderText("Enter name of new album");
@@ -90,11 +137,10 @@ public class GeneralController implements Initializable {
     }
 
     /**
-     * Helper method, saves album data and adds it to the TilePane
+     * Helper method that saves album data and adds it to the TilePane
      * @param title Title of new album
      */
     private void addNewAlbumData(String title){
-
         // Check that the input does not conflict with our albums and is not null
         if(invalidAlbumTitle(title)){ return; }
 
@@ -175,6 +221,9 @@ public class GeneralController implements Initializable {
         }
     }
 
+    /**
+     * Displays the currently active album in the tilepane
+     */
     private void displayAlbum(){
         for(Photo j : album.photos){
             File temp = new File(j.getPath());
@@ -193,11 +242,10 @@ public class GeneralController implements Initializable {
     	// Clear TilePane and begin loading photo thumbnails
         fx_tilepane.getChildren().clear();
 
-        // Create "Add New" label and add it to the TilePane
+        // Create "Search Results" label and add it to the TilePane
         Label add_text = new Label("Search Results");
         File resource_dir = new File(System.getProperty("user.dir") + "/data/resources/search_results.png");
         addToTilePane(add_text, resource_dir.toURI().toString());
-        //add_text.setOnMouseClicked(f -> addNewPhoto());
 
         // For each photo in album, add it to the TilePane and set action on click
         displayAlbum();
@@ -231,6 +279,11 @@ public class GeneralController implements Initializable {
         }
     }
 
+    /**
+     * Checks if album title is a valid input
+     * @param album_name Title given by user input
+     * @return True if invalid, false otherwise
+     */
     private boolean invalidAlbumTitle(String album_name) {
         for (Album a : current_user.albums) {
             if (album_name.equals(a.getTitle()) || album_name.equals("")) {
@@ -244,10 +297,23 @@ public class GeneralController implements Initializable {
     }
 
 
-    // PHOTO MANAGEMENT METHODS //
+    /*
+     * PHOTO MANAGEMENT METHODS
+     * setImageviewer()
+     * addNewPhoto()
+     * deletePhoto()
+     * nextPhoto()
+     * prevPhoto()
+     * editCaption()
+     * editTags()
+     * search()
+     * moveCopy()
+     * moveCopyHelper()
+     */
 
     /**
      * Helper method for MouseEvents
+     * @param thumb Label to get photo metadata
      * @param img File to set ImageViewer to
      */
     private void setImageviewer(Label thumb, Image img){
@@ -288,31 +354,39 @@ public class GeneralController implements Initializable {
         // If a file was selected, add it
         if(file != null){
             Photo new_photo = new Photo(file);
+            // If album does not contain our photo
             if(!album.photos.contains(new_photo)){
                 boolean found = false;
+                // Check each album
                 for (Album a : current_user.albums) {
                     if(a != null){
+                        // Load photos and check each photo
                         a.loadPhotos();
                         for (Photo p : a.photos) {
                             if(p != null){
+                                // If a photo matches, copy its caption and tags
                                 if (p.equals(new_photo)) {
                                     new_photo.setCaption(p.getCaption());
                                     for (Tag t : p.getTags()) {
                                         new_photo.addTag(t);
                                     }
+                                    found = true;
                                     break;
                                 }
                             }
                         }
+                        // If a photo match was found, no need to continue, break
                         if(found){ break; }
                     }
                 }
+                // Add our photo to album, tilepane
                 album.addPhoto(new_photo);
                 Label add_text = new Label(new_photo.getCaption());
                 addToTilePane(add_text, file.toURI().toString());
                 Image img = new Image(file.toURI().toString());
                 add_text.setOnMouseClicked(f -> setImageviewer(add_text, img));
             }else{
+                // If album already contains photo, error
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Photo already inside current album");
                 alert.setHeaderText("Invalid Photo Selected");
                 alert.showAndWait();
@@ -395,18 +469,15 @@ public class GeneralController implements Initializable {
         // If it shows "save edit", implies edit caption was pressed earlier
         if(fx_edit_caption.getText().equals("save edit")){
 
-            // Get index, set caption of photo and save
+            // Get index, set caption of photo and its label and save
             int index = fx_tilepane.getChildren().indexOf(active_photo);
-            //fx_tilepane.getChildren().get(index).setAccessibleText(fx_caption.getText());
             album.photos.get(index-1).setCaption(fx_caption.getText());
             Label cur_label = (Label)(fx_tilepane.getChildren().get(index));
             cur_label.setText(fx_caption.getText());
-
-            Photo cur_photo = album.photos.get(index-1);
-
-
             album.savePhotos();
 
+            // Check for identical photos in other albums and sync their captions
+            Photo cur_photo = album.photos.get(index-1);
             for (Album a : current_user.albums) {
                 if(a != null){
                     a.loadPhotos();
@@ -420,6 +491,7 @@ public class GeneralController implements Initializable {
                     a.savePhotos();
                 }
             }
+
             // Reset components
             fx_edit_caption.setText("edit caption");
             fx_caption.setDisable(true);
@@ -436,8 +508,11 @@ public class GeneralController implements Initializable {
     	//Get index of current photo
     	int index = fx_tilepane.getChildren().indexOf(active_photo) - 1;
     	photo = album.photos.get(index);
+
+    	// Create the TagEditor stage
     	Stage edit_tags_stage = Photos.newStage((Stage)fx_anchor.getScene().getWindow(), "TagEditor.fxml", "Edit Tags");
-    	//Update tags when editor window closes
+
+    	// Update tags when editor window closes
     	edit_tags_stage.setOnHidden(e -> fx_tags.setText(photo.getTags().toString()));
     }
     
@@ -445,7 +520,10 @@ public class GeneralController implements Initializable {
      * Launch window to search for images
      */
     public void search() {
+        // Create the Search stage
     	Stage search_stage = Photos.newStage((Stage)fx_anchor.getScene().getWindow(), "Search.fxml", "Search");
+
+    	// When closed, if an temporary album from search was created, display it
     	search_stage.setOnHidden(e -> {
     		if (album != null && album.getTitle().equals("~search_results")) {
     			showSearchResults();
@@ -460,11 +538,18 @@ public class GeneralController implements Initializable {
     	//Get index of current photo
     	int index = fx_tilepane.getChildren().indexOf(active_photo) - 1;
     	photo = album.photos.get(index);
+
+    	// Create MoveCopy stage
     	Stage move_copy_stage = Photos.newStage((Stage)fx_anchor.getScene().getWindow(), "MoveCopy.fxml", "Move or Copy");
+
+    	// When closed, call helper function
     	move_copy_stage.setOnHidden(e -> moveCopyHelper());
     }
 
-    public void moveCopyHelper(){
+    /**
+     * Removes photo from tilepane if it was moved to another photo
+     */
+    private void moveCopyHelper(){
         if(moved == true){
             int index = fx_tilepane.getChildren().indexOf(active_photo);
             fx_tilepane.getChildren().remove(index);
@@ -472,7 +557,13 @@ public class GeneralController implements Initializable {
         }
     }
 
-    // GENERAL METHODS //
+    /* GENERAL METHODS
+     * getUser()
+     * addtToTilePane()
+     * back()
+     * logout()
+     * initialize(0
+     */
 
     /**
      * Gets active user to work on
