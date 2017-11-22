@@ -209,7 +209,7 @@ public class GeneralController implements Initializable {
         int size = album.photos.size();
         for(int j = 0; j < size; j++){
             File temp = new File(album.photos.get(j).getPath());
-            Label thumb = new Label(temp.getName());
+            Label thumb = new Label(album.photos.get(j).getCaption());
             addToTilePane(thumb, temp.toURI().toString());
             Image img = new Image(temp.toURI().toString());
             thumb.setOnMouseClicked(f -> setImageviewer(thumb, img));
