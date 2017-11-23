@@ -62,6 +62,7 @@ public class Photos extends Application implements Serializable {
      * @param old_stage Current stage to be disabled until new Stage is closed
      * @param next_fxml Name of FXML to load
      * @param title Title of next scene
+     * @return newly created stage
      */
     public static Stage newStage(Stage old_stage, String next_fxml, String title){
 	    Stage new_stage = new Stage();

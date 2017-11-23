@@ -81,18 +81,18 @@ public class Photo implements Serializable {
     }
 
     /**
-     * Returns true if photo is older than arg
+     * Compares photos by last_modified date
      * @param p Photo to compare to
-     * @return
+     * @return true if photo is older than p
      */
     public boolean isOlder(Photo p){
         return (last_modified.compareTo(p.last_modified) > 0);
     }
 
     /**
-     * Returns true if photo is newer than arg
+     * Compares photos by last_modified date
      * @param p Photo to compare to
-     * @return
+     * @return true if photo is newer than p
      */
     public boolean isNewer(Photo p){
         return (last_modified.compareTo(p.last_modified) < 0);
