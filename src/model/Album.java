@@ -10,7 +10,6 @@ import java.util.ArrayList;
  * @author Benjamin Ker (bk375)
  * @author Jake Karasik (jak451)
  */
-@SuppressWarnings({"unchecked", "Duplicates"})
 public class Album implements Serializable {
 
     /**
@@ -19,11 +18,20 @@ public class Album implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	// Metadata
+	/**
+	 * Title of album
+	 */
     private String album_title;
+    /**
+	 * Directory to store data
+	 */
     public final String storeDir = "data/user";
+    /**
+	 * File extension of stored data
+	 */
     public final String storeFile = ".ser";
 
-    /*
+    /**
      * List of photos contained by album
      * Transient in order to prevent serialization by User
      */

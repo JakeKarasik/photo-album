@@ -15,9 +15,7 @@ import java.io.Serializable;
  * This class initializes the program and implements scene switching
  * @author Benjamin Ker (bk375)
  */
-@SuppressWarnings("WeakerAccess")
 public class Photos extends Application implements Serializable {
-	
 	
 	/**
 	 * ID used for tracking serial version

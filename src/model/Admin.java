@@ -11,7 +11,6 @@ import java.util.ArrayList;
  * @author Benjamin Ker (bk375)
  * @author Jake Karasik (jak451)
  */
-@SuppressWarnings({"unchecked", "Duplicates"})
 public class Admin{
 
     // List of users managed by admin
