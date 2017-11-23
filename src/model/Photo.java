@@ -20,10 +20,25 @@ public class Photo implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
     // Metadata
+	/**
+	 * File path of photo
+	 */
     private String path;
+    /**
+	 * Editable caption of photo
+	 */
     private String caption;
+    /**
+	 * List of all tags on photo
+	 */
     private ArrayList<Tag> photo_tags;
+    /**
+	 * Date last modified
+	 */
     private Calendar last_modified;
+    /**
+	 * Flag if is favorited image
+	 */
     private boolean favorite = false;
 
 
@@ -66,18 +81,18 @@ public class Photo implements Serializable {
     }
 
     /**
-     * Returns true if photo is older than arg
+     * Compares photos by last_modified date
      * @param p Photo to compare to
-     * @return
+     * @return true if photo is older than p
      */
     public boolean isOlder(Photo p){
         return (last_modified.compareTo(p.last_modified) > 0);
     }
 
     /**
-     * Returns true if photo is newer than arg
+     * Compares photos by last_modified date
      * @param p Photo to compare to
-     * @return
+     * @return true if photo is newer than p
      */
     public boolean isNewer(Photo p){
         return (last_modified.compareTo(p.last_modified) < 0);

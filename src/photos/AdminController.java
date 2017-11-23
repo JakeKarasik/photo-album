@@ -6,6 +6,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Admin;
+import model.User;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -14,7 +16,6 @@ import java.util.ResourceBundle;
  * @author Benjamin Ker (bk375)
  * @author Jake Karasik (jak451)
  */
-@SuppressWarnings ("unchecked")
 public class AdminController implements Initializable {
     /**
      * Container for the Admin dashboard
@@ -38,7 +39,7 @@ public class AdminController implements Initializable {
      * Shows list of users
      */
     @FXML
-    private ListView user_list;
+    private ListView<User> user_list;
 
     /**
      * Load our list of Users into the ListView

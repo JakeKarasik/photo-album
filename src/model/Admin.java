@@ -11,7 +11,6 @@ import java.util.ArrayList;
  * @author Benjamin Ker (bk375)
  * @author Jake Karasik (jak451)
  */
-@SuppressWarnings({"unchecked", "Duplicates"})
 public class Admin{
 
     // List of users managed by admin
@@ -159,6 +158,7 @@ public class Admin{
     /**
      * Deletes user if selected in ListView
      * @param index Index of User object to be removed
+     * @return true if user was successfully deleted
      */
     public static boolean deleteUser(int index){
         try{

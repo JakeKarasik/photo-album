@@ -48,6 +48,7 @@ public class SearchController {
 
     /**
      * Searches user's albums based on given  criteria
+     * @param onlyFavorites Flag to see if only favorited photos should be searched
      */
 	public void search(boolean onlyFavorites) {
 
