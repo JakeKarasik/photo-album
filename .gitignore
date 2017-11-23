@@ -1,5 +1,6 @@
 bin/*
 .idea/*
+*.ser
 out/*
 *.xml
 *.iml
