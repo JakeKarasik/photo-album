@@ -14,13 +14,7 @@ import model.*;
 public class MoveCopyController {
 
 	/**
-	 * Button to close the window
-	 */
-	/**
-	 * Button to move the photo to selected album
-	 */
-	/**
-	 * Button to copy the photo to selected album
+	 * Buttons to close the window, move the photo to selected album, and copy the photo to selected album
 	 */
 	@FXML
 	private Button close, move, copy;

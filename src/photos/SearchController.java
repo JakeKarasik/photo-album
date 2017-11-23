@@ -14,25 +14,43 @@ import model.*;
  * @author Jake Karasik (jak451)
  */
 public class SearchController {
-	
+
+    /**
+     * Close and search
+     */
 	@FXML
 	private Button close, regular_search, favorite_search;
-	
+    /**
+     * Allows user to choose time period
+     */
 	@FXML
 	private DatePicker from, to;
-	
+
+    /**
+     * Tags to search on
+     */
 	@FXML
 	private TextArea search_tags;
 	
+	 /**
+     * Calls search based on given criteria
+     */
 	public void regularSearch() {
 		search(false);
 	}
 	
+	 /**
+     * Calls search based on given criteria, only showing favorited photos
+     */
 	public void favoriteSearch() {
 		search(true);
 	}
-	
+
+    /**
+     * Searches user's albums based on given  criteria
+     */
 	public void search(boolean onlyFavorites) {
+
 		//Create temp album for storing search results
 		Album temp = new Album("~search_results");
 		
@@ -131,7 +149,10 @@ public class SearchController {
 		GeneralController.album = temp;
 		close();
 	}
-	
+
+    /**
+     * Closes Search window
+     */
 	public void close() {
 		Stage stage = (Stage)close.getScene().getWindow();
 		stage.close();

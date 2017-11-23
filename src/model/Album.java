@@ -140,10 +140,13 @@ public class Album implements Serializable {
         photos.remove(index);
         savePhotos();
     }
-    
+
+    /**
+     * Overrides toString()
+     * @return String album_title
+     */
     @Override
     public String toString() {
 		return album_title;
-    	
     }
 }

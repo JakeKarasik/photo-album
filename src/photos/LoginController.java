@@ -14,11 +14,20 @@ import model.User;
  */
 public class LoginController{
 
+    /**
+     * Username input
+     */
     @FXML
     private TextField user_in;
 
+    /**
+     * Password input
+     */
     @FXML TextField pass_in;
 
+    /**
+     * Container for the login window
+     */
     @FXML
     private AnchorPane fx_anchor;
 
