@@ -94,6 +94,7 @@ public class User implements Serializable {
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(storeDir + File.separator + getUser() + storeFile));
             ArrayList<Album> read = (ArrayList<Album>)(ois.readObject());
             albums = FXCollections.observableArrayList(read);
+            ois.close();
             return true;
         }catch(Exception e){
             albums = FXCollections.observableArrayList();

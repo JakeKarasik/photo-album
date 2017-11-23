@@ -3,6 +3,8 @@ package model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 
 /**
@@ -88,10 +90,16 @@ public class Album implements Serializable {
             // Get username of active user
             String username = Admin.users.get(Admin.user_id).getUser();
 
+
             // Create old file, new file and rename
             File of = new File( storeDir + File.separator + username + "-" + getTitle() + storeFile);
             File nf = new File(storeDir + File.separator + username + "-" + new_title + storeFile);
+            //System.out.println(of.isFile());
+            //System.out.println(of.getAbsolutePath());
+            //System.out.println(nf.getAbsolutePath());
             of.renameTo(nf);
+            //Files.copy(of.toPath(), nf.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            //Files.delete(of.toPath());
 
             // Set new title of album
             setTitle(new_title);
@@ -134,6 +142,7 @@ public class Album implements Serializable {
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(storeDir + File.separator + username + "-" + getTitle() +  storeFile));
             ArrayList<Photo> read = (ArrayList<Photo>)(ois.readObject());
             photos = FXCollections.observableArrayList(read);
+            ois.close();
             return true;
         }catch(Exception e){
             return false;
