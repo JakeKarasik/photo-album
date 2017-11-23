@@ -164,8 +164,12 @@ public class GeneralController implements Initializable {
                 }
             }
             existing_album.renameAlbum(title);
-            active_album.setText(title + " (" + existing_album.photos.size() + ")\n" + oldest.getShortDate() +
-                    " to " + newest.getShortDate());
+            if(oldest == null){
+                active_album.setText(title + " (" + existing_album.photos.size() + ")\n" + " ");
+            }else{
+                active_album.setText(title + " (" + existing_album.photos.size() + ")\n" + oldest.getShortDate() +
+                        " to " + newest.getShortDate());
+            }
             current_user.saveUser();
             return;
         }
