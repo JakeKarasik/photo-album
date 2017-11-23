@@ -147,8 +147,25 @@ public class GeneralController implements Initializable {
         // If there is an album selected, this means we are renaming an existing album
         if(active_album != null){
             Album existing_album = current_user.albums.get(fx_tilepane.getChildren().indexOf(active_album)-1);
+            existing_album.loadPhotos();
+
+            Photo oldest = null;
+            Photo newest = null;
+
+            for(Photo p : existing_album.photos){
+                if(oldest == null){
+                    oldest = p;
+                    newest = p;
+                }
+                if(p.isOlder(oldest)){
+                    oldest = p;
+                }else if(p.isNewer(newest)){
+                    newest = p;
+                }
+            }
             existing_album.renameAlbum(title);
-            active_album.setText(title);
+            active_album.setText(title + " (" + existing_album.photos.size() + ")\n" + oldest.getShortDate() +
+                    " to " + newest.getShortDate());
             current_user.saveUser();
             return;
         }
@@ -156,7 +173,7 @@ public class GeneralController implements Initializable {
         // Otherwise, create a new album and add to list and TilePane
         Album new_album = new Album(title);
         current_user.addAlbum(new_album);
-        Label add_text = new Label(title);
+        Label add_text = new Label(title + " (0)\n" + " ");
         File resource_dir = new File(System.getProperty("user.dir") + "/data/resources/folder.png");
         addToTilePane(add_text, resource_dir.toURI().toString());
         add_text.setOnMouseClicked(e -> mouseHandler(e, add_text));
@@ -266,8 +283,6 @@ public class GeneralController implements Initializable {
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
             String album_name = result.get();
-            // Get size of the list of albums owned by current user
-            int size = current_user.albums.size();
 
             // Check that the input does not conflict with our albums and is not null
             if(invalidAlbumTitle(album_name)){ return; }
@@ -424,6 +439,7 @@ public class GeneralController implements Initializable {
         fx_next.setDisable(true);
         fx_move_copy.setDisable(true);
         fx_edit_tags.setDisable(true);
+        fx_favorite.setDisable(true);
     }
 
     /**
@@ -555,6 +571,22 @@ public class GeneralController implements Initializable {
     	search_stage.setOnHidden(e -> {
     		if (album != null && album.getTitle().equals("~search_results")) {
     			showSearchResults();
+
+                // Set components to empty
+                fx_imageviewer.setImage(null);
+                fx_caption.setText("\0");
+                fx_date.setText("\0");
+                fx_name.setText("\0");
+                fx_tags.setText("\0");
+
+                // Set buttons
+                fx_edit_caption.setDisable(true);
+                fx_delete_photo.setDisable(true);
+                fx_prev.setDisable(true);
+                fx_next.setDisable(true);
+                fx_move_copy.setDisable(true);
+                fx_edit_tags.setDisable(true);
+                fx_favorite.setDisable(true);
     		}
     	});
     }
