@@ -23,6 +23,7 @@ public class Photo implements Serializable {
     private String caption;
     private ArrayList<Tag> photo_tags;
     private Calendar last_modified;
+    private boolean favorite = false;
 
 
     /**
@@ -124,6 +125,22 @@ public class Photo implements Serializable {
 		copy.setCaption(this.getCaption());
 		
 		return copy;
+	}
+	
+	/**
+	 * Check if photo is marked as a favorite.
+	 * @return true if is favorite
+	 */
+	public boolean isFavorite() {
+		return favorite;
+	}
+
+	/**
+	 * Change isFavorite status.
+	 * @param b new favorite status
+	 */
+	public void setIsFavorite(boolean b) {
+		favorite = b;
 	}
 
     @Override

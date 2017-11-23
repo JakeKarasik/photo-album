@@ -71,7 +71,7 @@ public class GeneralController implements Initializable {
      */
     @FXML
     private Button fx_create, fx_rename, fx_delete_album, fx_search, fx_save_search, fx_back, fx_logout, fx_prev,
-            fx_next, fx_edit_caption, fx_delete_photo, fx_move_copy, fx_edit_tags;
+            fx_next, fx_edit_caption, fx_delete_photo, fx_move_copy, fx_edit_tags, fx_favorite;
 
     /**
      * Displays metadata of a photo when it is selected
@@ -227,14 +227,13 @@ public class GeneralController implements Initializable {
     private void displayAlbum(){
         for(Photo j : album.photos){
             File temp = new File(j.getPath());
-            Label thumb = new Label(j.getCaption());
+            Label thumb = new Label(j.getCaption() + (j.isFavorite() ? " *" : ""));
             addToTilePane(thumb, temp.toURI().toString());
             Image img = new Image(temp.toURI().toString());
             thumb.setOnMouseClicked(f -> setImageviewer(thumb, img));
         }
     }
 
-    
     /**
      * Loads search results into main display
      */
@@ -328,6 +327,7 @@ public class GeneralController implements Initializable {
         fx_imageviewer.setImage(img);
         fx_tags.setText(selected.getTags().toString());
         fx_tags.setWrapText(true);
+        fx_favorite.setText(selected.isFavorite() ? "unfavorite" : "favorite");
 
         // Set label as active photo
         active_photo = thumb;
@@ -339,6 +339,7 @@ public class GeneralController implements Initializable {
         fx_prev.setDisable(false);
         fx_next.setDisable(false);
         fx_move_copy.setDisable(false);
+        fx_favorite.setDisable(false);
     }
 
     /**
@@ -499,6 +500,31 @@ public class GeneralController implements Initializable {
         }
         // Otherwise, change component to save edit and wait for it to be pressed again
         fx_edit_caption.setText("save edit");
+    }
+    
+    /**
+     * Mark/unmark photo as favorite
+     */
+    public void setIsFavorite() {
+    	 Photo cur_photo = album.photos.get(fx_tilepane.getChildren().indexOf(active_photo)-1);
+    	 boolean toSet = !cur_photo.isFavorite();
+    	 
+    	 //Update status
+    	 cur_photo.setIsFavorite(toSet);
+     	 fx_favorite.setText(toSet ? "unfavorite" : "favorite");
+     	 active_photo.setText(cur_photo.getCaption() + (toSet ? " *" : "")); 
+     	 album.savePhotos();
+     	 
+     	 //Update status for all same image
+         for (Album a : current_user.albums) {
+             a.loadPhotos();
+             for (Photo p : a.photos) {
+                 if (p.equals(cur_photo)) {
+                     p.setIsFavorite(toSet);
+                 }
+             }
+             a.savePhotos();
+         }
     }
     
     /**

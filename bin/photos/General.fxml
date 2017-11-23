@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.TilePane?>
 
-<AnchorPane fx:id="fx_anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="795.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="photos.GeneralController">
+<AnchorPane fx:id="fx_anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="795.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="photos.GeneralController">
     <children>
 
         <!-- ScrollPane for albums/image thumbnails -->
@@ -28,8 +28,8 @@
         <Label layoutX="167.0" layoutY="369.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="Album Options" />
         <Button fx:id="fx_rename" disable="true" layoutX="100.0" layoutY="386.0" mnemonicParsing="false" onMouseClicked="#renameAlbum" prefHeight="36.0" prefWidth="100.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="rename" />
         <Button fx:id="fx_delete_album" disable="true" layoutX="204.0" layoutY="386.0" mnemonicParsing="false" onMouseClicked="#deleteAlbum" prefHeight="36.0" prefWidth="100.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="delete" />
-        <Button fx:id="fx_search" onMouseClicked="#search" layoutX="100.0" layoutY="427.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="100.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="new search" />
-        <Button fx:id="fx_save_search" onMouseClicked="#saveSearch" disable="true" layoutX="203.0" layoutY="427.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="100.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="save search" />
+        <Button fx:id="fx_search" layoutX="100.0" layoutY="427.0" mnemonicParsing="false" onMouseClicked="#search" prefHeight="36.0" prefWidth="100.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="new search" />
+        <Button fx:id="fx_save_search" disable="true" layoutX="203.0" layoutY="427.0" mnemonicParsing="false" onMouseClicked="#saveSearch" prefHeight="36.0" prefWidth="100.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="save search" />
 
         <!-- Selected image display -->
         <Pane layoutX="333.0" layoutY="14.0" prefHeight="300.0" prefWidth="450.0" style="-fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;">
@@ -56,6 +56,7 @@
         <Button fx:id="fx_delete_photo" disable="true" layoutX="597.0" layoutY="382.0" mnemonicParsing="false" onMouseClicked="#deletePhoto" prefHeight="36.0" prefWidth="90.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="delete" />
         <Button fx:id="fx_move_copy" disable="true" layoutX="693.0" layoutY="382.0" mnemonicParsing="false" onMouseClicked="#moveCopy" prefHeight="36.0" prefWidth="90.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="move/copy" />
         <Button fx:id="fx_edit_tags" disable="true" layoutX="597.0" layoutY="423.0" mnemonicParsing="false" onMouseClicked="#editTags" prefHeight="36.0" prefWidth="90.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="edit tags" />
+		<Button fx:id="fx_favorite" disable="true" layoutX="693.0" layoutY="423.0" mnemonicParsing="false" onMouseClicked="#setIsFavorite" prefHeight="36.0" prefWidth="90.0" style="-fx-font-family:Roboto; -fx-font-size:12.0" text="favorite" />
 
         <!-- Misc. -->
         <Separator layoutX="304.0" layoutY="17.0" orientation="VERTICAL" prefHeight="428.0" prefWidth="29.0" />

@@ -16,7 +16,7 @@ import model.*;
 public class SearchController {
 	
 	@FXML
-	private Button close, search;
+	private Button close, regular_search, favorite_search;
 	
 	@FXML
 	private DatePicker from, to;
@@ -24,7 +24,15 @@ public class SearchController {
 	@FXML
 	private TextArea search_tags;
 	
-	public void search() {
+	public void regularSearch() {
+		search(false);
+	}
+	
+	public void favoriteSearch() {
+		search(true);
+	}
+	
+	public void search(boolean onlyFavorites) {
 		//Create temp album for storing search results
 		Album temp = new Album("~search_results");
 		
@@ -76,7 +84,8 @@ public class SearchController {
 				if (search_by_date && !search_by_tags && 
 						current_last_modified.compareTo(ctd) <= 0 && 
 						current_last_modified.compareTo(cfd) >= 0 &&
-						!added_photos.contains(p)) { //don't add duplicates
+						!added_photos.contains(p) && //don't add duplicates
+						((onlyFavorites && p.isFavorite()) || (!onlyFavorites))) { 
 					temp.photos.add(p);
 					temp.savePhotos();
 					added_photos.add(p);
@@ -87,7 +96,7 @@ public class SearchController {
 				if (search_by_tags) {
 					ArrayList<Tag> p_tags = p.getTags();
 					//If search by date and tags, need to check if within range
-					if (!added_photos.contains(p) && search_by_date && current_last_modified.compareTo(ctd) <= 0 && current_last_modified.compareTo(cfd) >= 0) {
+					if (!added_photos.contains(p) && search_by_date && current_last_modified.compareTo(ctd) <= 0 && current_last_modified.compareTo(cfd) >= 0 && ((onlyFavorites && p.isFavorite()) || (!onlyFavorites))) {
 						//Compare vs all tags to make sure all match 
 						for (String test_tags : tags) {
 							String[] test_tag = test_tags.split("=");
@@ -101,7 +110,7 @@ public class SearchController {
 							temp.savePhotos();
 							added_photos.add(p);
 						}
-					} else if (!added_photos.contains(p) && !search_by_date) {
+					} else if (!added_photos.contains(p) && !search_by_date && ((onlyFavorites && p.isFavorite()) || (!onlyFavorites))) {
 						//Compare vs all tags to make sure all match 
 						for (String test_tags : tags) {
 							String[] test_tag = test_tags.split("=");
@@ -127,5 +136,4 @@ public class SearchController {
 		Stage stage = (Stage)close.getScene().getWindow();
 		stage.close();
 	}
-	
 }

@@ -23,11 +23,13 @@
         <TextArea fx:id="search_tags" layoutX="15.0" layoutY="215.0" prefHeight="103.0" prefWidth="258.0" />
 
         <!-- Search | Cancel -->
-        <Button fx:id="search" onMouseClicked="#search" layoutX="14.0" layoutY="342.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="126.0" style="-fx-font-family:Roboto; -fx-font-size:14.0" text="search" />
-        <Button fx:id="close" onMouseClicked="#close" layoutX="148.0" layoutY="342.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="132.0" style="-fx-font-family:Roboto; -fx-font-size:14.0" text="close" />
+        <Button fx:id="search" layoutX="14.0" layoutY="342.0" mnemonicParsing="false" onMouseClicked="#regularSearch" prefHeight="39.0" prefWidth="75.0" style="-fx-font-family:Roboto; -fx-font-size:14.0" text="search" />
+        <Button fx:id="close" layoutX="206.0" layoutY="342.0" mnemonicParsing="false" onMouseClicked="#close" prefHeight="39.0" prefWidth="75.0" style="-fx-font-family:Roboto; -fx-font-size:14.0" text="close" />
+		<Button fx:id="find_favorites" layoutX="92.0" layoutY="342.0" mnemonicParsing="false" onMouseClicked="#favoriteSearch" prefHeight="39.0" prefWidth="111.0" style="-fx-font-family:Roboto; -fx-font-size:14.0" text="search favs" />
 
         <!-- Misc. -->
         <Line endX="100.0" layoutX="143.0" layoutY="329.0" startX="-100.0" />
       <Label layoutX="15.0" layoutY="187.0" style="-fx-font-size: 18; -fx-font-family: Roboto;" text="Tags:" />
+      
     </children>
 </AnchorPane>
